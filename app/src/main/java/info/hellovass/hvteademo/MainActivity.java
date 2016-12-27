@@ -23,4 +23,8 @@ public class MainActivity extends AppCompatActivity {
   @OnClick(R.id.btn_peroimageloader_test) void turnToPeroImageLoaderTestActivity() {
     startActivity(new Intent(this, PeroImageLoaderTestActivity.class));
   }
+
+  @OnClick(R.id.btn_perotaglayout_test) void turnToPeroTagLayoutTestActivity() {
+    startActivity(new Intent(this, PeroTagLayoutTestActivity.class));
+  }
 }

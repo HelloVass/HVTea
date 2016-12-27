@@ -26,6 +26,12 @@
 
     </activity>
 
+    <activity
+        android:name=".PeroTagLayoutTestActivity"
+        android:label="TagLayout 测试">
+
+    </activity>
+
   </application>
 
 </manifest>
