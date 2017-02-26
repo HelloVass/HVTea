@@ -32,4 +32,8 @@ public class MainActivity extends AppCompatActivity {
   @OnClick(R.id.btn_peroninegridview_test) void turnToPeroNineGridViewTestActivity() {
     startActivity(new Intent(this, PeroNineGridViewTestActivity.class));
   }
+
+  @OnClick(R.id.btn_perodialog_test) void turnToPeroDialogTestActivity() {
+    startActivity(new Intent(this, PeroDialogTestActivity.class));
+  }
 }
