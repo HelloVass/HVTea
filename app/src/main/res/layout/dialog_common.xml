@@ -12,7 +12,7 @@
       android:orientation="vertical"
       >
 
-    <info.hellovass.hvteademo.dialog.DialogHeaderView
+    <info.hellovass.hvteademo.dialog.base.DialogHeaderView
         android:id="@+id/dialog_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:gravity="right|center_vertical"
         android:orientation="horizontal"
         >
@@ -45,9 +45,10 @@
           android:id="@+id/btn_negative"
           android:layout_width="56dp"
           android:layout_height="36dp"
-          android:background="@android:color/transparent"
+          android:background="@drawable/bg_touch"
           android:gravity="center"
           android:textColor="#DA5541"
+          android:visibility="gone"
           tools:text="取消"
           />
 
@@ -55,15 +56,15 @@
           android:id="@+id/btn_positive"
           android:layout_width="56dp"
           android:layout_height="36dp"
-          android:background="@android:color/transparent"
+          android:background="@drawable/bg_touch"
           android:gravity="center"
           android:textColor="#DA5541"
+          android:visibility="gone"
           tools:text="确定"
           />
 
     </LinearLayout>
 
   </LinearLayout>
-
 
 </FrameLayout>

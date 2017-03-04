@@ -1,4 +1,4 @@
-package info.hellovass.hvteademo.dialog;
+package info.hellovass.hvteademo.dialog.base;
 
 import android.content.Context;
 import android.util.AttributeSet;

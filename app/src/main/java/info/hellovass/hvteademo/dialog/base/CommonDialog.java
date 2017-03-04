@@ -1,10 +1,12 @@
-package info.hellovass.hvteademo.dialog;
+package info.hellovass.hvteademo.dialog.base;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -15,7 +17,14 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import info.hellovass.hv_tea.adapter.recyclerview.CommonAdapter;
+import info.hellovass.hv_tea.adapter.recyclerview.ItemViewDelegate;
+import info.hellovass.hv_tea.adapter.recyclerview.MultiViewTypeAdapter;
+import info.hellovass.hv_tea.adapter.recyclerview.ViewHolder;
 import info.hellovass.hvteademo.R;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by hello on 2017/2/23.
@@ -37,11 +46,7 @@ public class CommonDialog extends Dialog {
 
   protected TextView mPositiveBtn;
 
-  private final int mContentPadding = dp2px(16.0F);
-
-  private final float DIALOG_WIDTH_RATIO = 0.8F;
-
-  private final float DIALOG_HEIGHT_RATIO = 0.6F;
+  private final int mContentPadding = dp2px(8.0F);
 
   private DialogInterface.OnClickListener mDismissClickListener = new OnClickListener() {
 
@@ -99,6 +104,34 @@ public class CommonDialog extends Dialog {
     }
   }
 
+  public void setItems(String[] items,
+      MultiViewTypeAdapter.OnItemClickListener<String> onItemClickListener) {
+
+    RecyclerView recyclerView = new RecyclerView(mContent.getContext());
+    recyclerView.setHasFixedSize(true);
+    recyclerView.setLayoutManager(new LinearLayoutManager(mContent.getContext()));
+    recyclerView.setPadding(mContentPadding, mContentPadding, mContentPadding, mContentPadding);
+
+    SimpleAdapter adapter = new SimpleAdapter(mContent.getContext(), Arrays.asList(items));
+    adapter.setOnItemClickListener(onItemClickListener);
+    recyclerView.setAdapter(adapter);
+
+    setContent(recyclerView, 0);
+  }
+
+  public <T> void setItems(CommonAdapter<T> adapter,
+      MultiViewTypeAdapter.OnItemClickListener<T> onItemClickListener) {
+
+    RecyclerView recyclerView = new RecyclerView(mContent.getContext());
+    recyclerView.setHasFixedSize(true);
+    recyclerView.setLayoutManager(new LinearLayoutManager(mContent.getContext()));
+    recyclerView.setPadding(mContentPadding, mContentPadding, mContentPadding, mContentPadding);
+    recyclerView.setAdapter(adapter);
+    adapter.setOnItemClickListener(onItemClickListener);
+
+    setContent(recyclerView, 0);
+  }
+
   public void setMessage(int messageResId) {
     setMessage(getContext().getResources().getString(messageResId));
   }
@@ -111,23 +144,17 @@ public class CommonDialog extends Dialog {
     }
 
     ScrollView scrollView = new ScrollView(getContext());
-    scrollView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-        FrameLayout.LayoutParams.WRAP_CONTENT));
 
     TextView messageTextView = new TextView(getContext());
-    messageTextView.setLayoutParams(
-        new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-            FrameLayout.LayoutParams.WRAP_CONTENT));
     messageTextView.setText(message);
     messageTextView.setPadding(mContentPadding, mContentPadding, mContentPadding, mContentPadding);
     messageTextView.setTextColor(Color.BLACK);
     messageTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14.0F);
     messageTextView.setLineSpacing(0.0F, 1.3F);
 
-    ScrollView.LayoutParams layoutParams =
+    scrollView.addView(messageTextView,
         new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT,
-            ScrollView.LayoutParams.WRAP_CONTENT);
-    scrollView.addView(messageTextView, layoutParams);
+            ScrollView.LayoutParams.WRAP_CONTENT));
 
     setContent(scrollView, 0);
   }
@@ -143,7 +170,7 @@ public class CommonDialog extends Dialog {
     mContainer.setPadding(padding, padding, padding, padding);
     FrameLayout.LayoutParams layoutParams =
         new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-            FrameLayout.LayoutParams.MATCH_PARENT);
+            FrameLayout.LayoutParams.WRAP_CONTENT);
     mContainer.addView(view, layoutParams);
   }
 
@@ -233,8 +260,8 @@ public class CommonDialog extends Dialog {
     Window window = getWindow();
 
     WindowManager.LayoutParams layoutParams = window.getAttributes();
-    layoutParams.width = (int) (getScreenWidth(getContext()) * DIALOG_WIDTH_RATIO);
-    layoutParams.height = (int) (getScreenHeight(getContext()) * DIALOG_HEIGHT_RATIO);
+    layoutParams.width = (int) (getScreenWidth(getContext()) * 0.8F);
+    layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
     window.setAttributes(layoutParams);
 
     super.show();
@@ -273,5 +300,45 @@ public class CommonDialog extends Dialog {
 
     DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
     return displayMetrics.heightPixels;
+  }
+
+  private static class SimpleAdapter extends MultiViewTypeAdapter<String> {
+
+    protected Context mContext;
+
+    protected List<String> mDataList;
+
+    protected LayoutInflater mLayoutInflater;
+
+    public SimpleAdapter(Context context, List<String> dataList) {
+      super(context, dataList);
+
+      mContext = context;
+      mLayoutInflater = LayoutInflater.from(context);
+      mDataList = dataList == null ? new ArrayList<String>() : dataList;
+
+      addItemViewDelegate(provideDefaultItemViewDelegate());
+    }
+
+    private ItemViewDelegate<String> provideDefaultItemViewDelegate() {
+
+      return new ItemViewDelegate<String>() {
+
+        @Override public int provideItemViewLayoutResId() {
+
+          return R.layout.listitem_dialog_common;
+        }
+
+        @Override public boolean isForViewType(String item, int position) {
+
+          return true;
+        }
+
+        @Override public void convert(ViewHolder holder, String entity, int position) {
+
+          holder.setText(R.id.tv_title, entity);
+        }
+      };
+    }
   }
 }
