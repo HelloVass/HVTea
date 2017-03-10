@@ -100,7 +100,7 @@ public abstract class MultiViewTypeAdapter<T> extends RecyclerView.Adapter<ViewH
 
       @Override public boolean onLongClick(View v) {
 
-        if (mOnItemClickListener != null) {
+        if (mOnItemLongClickListener != null) {
 
           int position = holder.getAdapterPosition();
           return mOnItemLongClickListener.onItemOnLongClick(v, mDataList.get(position), position);
