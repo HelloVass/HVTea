@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import info.hellovass.hv_tea.adapter.recyclerview.CommonAdapter;
+import info.hellovass.hv_tea.adapter.recyclerview.MultiViewTypeAdapter;
 import info.hellovass.hv_tea.adapter.recyclerview.ViewHolder;
 import info.hellovass.hvteademo.dialog.base.CommonDialog;
 import java.util.ArrayList;
@@ -51,7 +53,16 @@ public class PeroDialogTestActivity extends AppCompatActivity {
 
               holder.setText(R.id.tv_title, entity);
             }
-          }, null);
+          }, new MultiViewTypeAdapter.OnItemClickListener<String>() {
+
+            @Override public void onItemClick(View view, String entity, int position) {
+
+              Toast.makeText(PeroDialogTestActivity.this, "选中第" + position + "项",
+                  Toast.LENGTH_SHORT).show();
+
+              mCommonDialog.dismiss();
+            }
+          });
     }
 
     return mCommonDialog;

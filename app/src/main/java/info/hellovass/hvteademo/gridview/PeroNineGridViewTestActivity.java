@@ -6,11 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import info.hellovass.hv_tea.adapter.viewgroup.CommonAdapter;
+import info.hellovass.hv_tea.adapter.viewgroup.ViewHolder;
 import info.hellovass.hv_tea.imageloader.PeroImageLoader;
 import info.hellovass.hv_tea.imageloader.PeroImageLoaderConfig;
-import info.hellovass.hv_tea.nine_grid.BaseAdapter;
 import info.hellovass.hv_tea.nine_grid.NineGridView;
-import info.hellovass.hv_tea.nine_grid.ViewHolder;
 import info.hellovass.hvteademo.R;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,29 +29,18 @@ public class PeroNineGridViewTestActivity extends AppCompatActivity {
     setContentView(R.layout.activity_peroninegridview_test);
     ButterKnife.bind(this);
 
-    mNineGridView.setAdapter(new BaseAdapter<PeroPicture>(this, generatePictureList()) {
+    mNineGridView.setAdapter(
+        new CommonAdapter<PeroPicture>(this, R.layout.item_type_picture, generatePictureList()) {
 
-      @Override public void convert(ViewHolder holder, int position, PeroPicture peroPicture) {
-
-        switch (peroPicture.provideItemLayoutResId()) {
-
-          case R.layout.item_type_picture:
-
-            ImageView picImageView = holder.getView(R.id.iv_picture);
+          @Override protected void convert(ViewHolder holder, PeroPicture picture, int position) {
 
             PeroImageLoader.getInstance()
-                .loadImage(getContext(),
-                    new PeroImageLoaderConfig.Builder().setUrl(peroPicture.mUrl)
-                        .setPlaceHolderResId(R.mipmap.ic_launcher)
-                        .setTarget(picImageView)
-                        .build());
-            break;
-
-          default:
-            break;
-        }
-      }
-    });
+                .loadImage(mContext, new PeroImageLoaderConfig.Builder().setUrl(picture.mUrl)
+                    .setPlaceHolderResId(R.mipmap.ic_launcher)
+                    .setTarget((ImageView) holder.getView(R.id.iv_picture))
+                    .build());
+          }
+        });
   }
 
   private List<PeroPicture> generatePictureList() {

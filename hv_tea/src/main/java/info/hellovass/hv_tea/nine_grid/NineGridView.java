@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import info.hellovass.hv_tea.adapter.viewgroup.ViewGroupAdapter;
 
 /**
  * Created by hello on 2016/12/19.
@@ -26,24 +27,24 @@ public class NineGridView extends ViewGroup {
 
   private int mItemCount = 0; // item 的个数
 
-  private BaseAdapter mAdapter;
-
   public NineGridView(Context context) {
     this(context, null);
   }
 
   public NineGridView(Context context, AttributeSet attrs) {
     super(context, attrs);
+
     init(context, attrs);
   }
 
   private void init(Context context, AttributeSet attrs) {
-    //   nothing to do
+
   }
 
-  public void setAdapter(BaseAdapter adapter) {
+  public void setAdapter(ViewGroupAdapter adapter) {
 
     if (adapter == null) {
+
       throw new IllegalArgumentException("adapter can't be null");
     }
 
@@ -57,11 +58,10 @@ public class NineGridView extends ViewGroup {
     calculateRowCount();
 
     for (int index = 0; index < mItemCount; index++) {
+
       View childView = adapter.getView(this, index);
       addView(childView);
     }
-
-    mAdapter = adapter;
   }
 
   @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -89,7 +89,7 @@ public class NineGridView extends ViewGroup {
 
   @Override protected void onLayout(boolean changed, int l, int t, int r, int b) {
 
-    for (int index = 0; index < getChildCount() && mAdapter != null; index++) {
+    for (int index = 0; index < getChildCount(); index++) {
 
       View childView = getChildAt(index);
 
@@ -102,7 +102,6 @@ public class NineGridView extends ViewGroup {
       int bottom = top + mItemSize;
 
       childView.layout(left, top, right, bottom);
-      mAdapter.convert(ViewHolder.get(childView), index);
     }
   }
 

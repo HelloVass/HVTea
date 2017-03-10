@@ -5,9 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import info.hellovass.hv_tea.tag_layout.BaseAdapter;
+import info.hellovass.hv_tea.adapter.viewgroup.CommonAdapter;
 import info.hellovass.hv_tea.tag_layout.PeroTagLayout;
-import info.hellovass.hv_tea.tag_layout.ViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +24,11 @@ public class PeroTagLayoutTestActivity extends AppCompatActivity {
     setContentView(R.layout.activity_perotaglayout_test);
     ButterKnife.bind(this);
 
-    mPeroTagLayout.setAdapter(new BaseAdapter<String>(this, R.layout.tag_pero, generateTags()) {
+    mPeroTagLayout.setAdapter(new CommonAdapter<String>(this, R.layout.tag_pero, generateTags()) {
 
-      @Override protected void convert(ViewHolder holder, int position, String tag) {
+      @Override
+      protected void convert(info.hellovass.hv_tea.adapter.viewgroup.ViewHolder holder, String tag,
+          int position) {
 
         holder.setText(R.id.tv_tag, tag);
       }

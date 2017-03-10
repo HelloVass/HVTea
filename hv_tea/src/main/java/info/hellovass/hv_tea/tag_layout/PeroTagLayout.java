@@ -4,14 +4,13 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import info.hellovass.hv_tea.adapter.viewgroup.ViewGroupAdapter;
 
 /**
  * Created by hello on 2016/12/19.
  */
 
 public class PeroTagLayout extends ViewGroup {
-
-  private BaseAdapter mAdapter;
 
   public PeroTagLayout(Context context) {
     this(context, null);
@@ -21,21 +20,22 @@ public class PeroTagLayout extends ViewGroup {
     super(context, attrs);
   }
 
-  public void setAdapter(BaseAdapter adapter) {
+  public void setAdapter(ViewGroupAdapter adapter) {
 
     if (adapter == null) {
+
       throw new IllegalArgumentException("adapter can't be null");
     }
 
     removeAllViews();
 
     int count = adapter.getCount();
+
     for (int index = 0; index < count; index++) {
+
       View childView = adapter.getView(this, index);
       addView(childView, index);
     }
-
-    mAdapter = adapter;
   }
 
   @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -143,14 +143,17 @@ public class PeroTagLayout extends ViewGroup {
   }
 
   @Override public LayoutParams generateLayoutParams(AttributeSet attrs) {
+
     return new MarginLayoutParams(getContext(), attrs);
   }
 
   @Override protected LayoutParams generateLayoutParams(LayoutParams p) {
+
     return new MarginLayoutParams(p);
   }
 
   @Override protected LayoutParams generateDefaultLayoutParams() {
+
     return new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
   }
 }
