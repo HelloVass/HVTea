@@ -40,6 +40,11 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     return new ViewHolder(context, itemView);
   }
 
+  public static ViewHolder create(Context context, ViewGroup parent, View view) {
+
+    return new ViewHolder(context, view);
+  }
+
   @SuppressWarnings("unchecked") public <T extends View> T getView(int viewId) {
 
     View view = mViewSparseArray.get(viewId);
@@ -53,28 +58,28 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     return (T) view;
   }
 
-  public ViewHolder setText(int viewId,String text){
+  public ViewHolder setText(int viewId, String text) {
 
     TextView textView = getView(viewId);
     textView.setText(text);
     return this;
   }
 
-  public ViewHolder setTextColor(int viewId,int textColor){
+  public ViewHolder setTextColor(int viewId, int textColor) {
 
     TextView textView = getView(viewId);
     textView.setTextColor(textColor);
     return this;
   }
 
-  public ViewHolder setImageResource(int viewId,int resId){
+  public ViewHolder setImageResource(int viewId, int resId) {
 
     ImageView imageView = getView(viewId);
     imageView.setImageResource(resId);
     return this;
   }
 
-  public ViewHolder setBackgroundColor(int viewId,int color){
+  public ViewHolder setBackgroundColor(int viewId, int color) {
 
     View view = getView(viewId);
     view.setBackgroundColor(color);

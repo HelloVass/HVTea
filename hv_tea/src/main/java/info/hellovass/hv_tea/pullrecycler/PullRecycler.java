@@ -12,19 +12,32 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.FrameLayout;
 import info.hellovass.hv_tea.R;
+import info.hellovass.hv_tea.pullrecycler.base.IPullRecycler;
 import info.hellovass.hv_tea.pullrecycler.layoutmanager.ILayoutManager;
+import info.hellovass.hv_tea.pullrecycler.loadmore.ILoadMoreHandler;
+import info.hellovass.hv_tea.pullrecycler.loadmore.ILoadMoreUIHandler;
+import info.hellovass.hv_tea.pullrecycler.refresh.IRefreshHandler;
 
 /**
- * Created by hello on 2017/3/10.
+ * Created by hellovass on 2017/3/10.
+ *
+ * 封装下拉刷新和上拉加载更多的组件
  */
 
-public class PullRecycler extends FrameLayout {
+public class PullRecycler extends FrameLayout
+    implements IPullRecycler, IPullRecycler.IHandlerProvider {
 
   private SwipeRefreshLayout mRefreshLayout;
 
   private RecyclerView mRecyclerView;
 
   private ILayoutManager mLayoutManager;
+
+  private ILoadMoreUIHandler mLoadMoreUIHandler;
+
+  private ILoadMoreHandler mLoadMoreHandler;
+
+  private IRefreshHandler mRefreshHandler;
 
   private boolean mEnableLoadMore = false;
 
@@ -34,11 +47,25 @@ public class PullRecycler extends FrameLayout {
 
   private boolean mLoadError = false;
 
+  private boolean mHasMore = false;
+
   private int mTouchSlop = 0;
 
   private int mYDown = 0;
 
   private int mLastY = 0;
+
+  private SwipeRefreshLayout.OnRefreshListener mSwipeRefreshListener =
+      new SwipeRefreshLayout.OnRefreshListener() {
+
+        @Override public void onRefresh() {
+
+          if (mEnableRefresh && mRefreshHandler != null && !mIsLoading) {
+
+            mRefreshHandler.onRefresh();
+          }
+        }
+      };
 
   private RecyclerView.OnScrollListener mOnReachBottomListener =
       new RecyclerView.OnScrollListener() {
@@ -74,18 +101,112 @@ public class PullRecycler extends FrameLayout {
     init(context, attrs);
   }
 
+  private void init(Context context, AttributeSet attrs) {
+
+    mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+
+    View.inflate(context, R.layout.layout_pull_recycler, this);
+
+    mRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_Layout);
+    mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+
+    mRefreshLayout.setOnRefreshListener(mSwipeRefreshListener);
+    mRecyclerView.addOnScrollListener(mOnReachBottomListener);
+  }
+
   public void enableLoadMore(boolean enableLoadMore) {
+
     mEnableLoadMore = enableLoadMore;
   }
 
   public void setEnableRefresh(boolean enableRefresh) {
+
     mEnableRefresh = enableRefresh;
     mRefreshLayout.setEnabled(enableRefresh);
   }
 
+  @Override public void setRefreshHandler(IRefreshHandler refreshHandler) {
+
+    if (refreshHandler == null) {
+
+      throw new IllegalArgumentException("refreshHandler can't be null");
+    }
+
+    mRefreshHandler = refreshHandler;
+  }
+
+  @Override public void setLoadMoreUIHandler(ILoadMoreUIHandler loadMoreUIHandler) {
+
+    if (loadMoreUIHandler == null) {
+      throw new IllegalArgumentException("loadMoreUIHandler can't be null");
+    }
+
+    mLoadMoreUIHandler = loadMoreUIHandler;
+    mLoadMoreUIHandler.getConvertView().setOnClickListener(new OnClickListener() {
+      @Override public void onClick(View v) {
+
+        prepareToLoadMore();
+      }
+    });
+  }
+
+  @Override public void setLoadMoreHandler(ILoadMoreHandler loadMoreHandler) {
+
+    if (loadMoreHandler == null) {
+
+      throw new IllegalArgumentException("loadMoreHandler can't be null");
+    }
+
+    mLoadMoreHandler = loadMoreHandler;
+  }
+
   public void setLayoutManager(ILayoutManager layoutManager) {
+
+    if (layoutManager == null) {
+      throw new IllegalArgumentException("layoutManager can't be null");
+    }
+
     mLayoutManager = layoutManager;
     mRecyclerView.setLayoutManager(layoutManager.getLayoutManager());
+  }
+
+  public void setAdapter(RecyclerView.Adapter adapter) {
+
+    if (adapter == null) {
+
+      throw new IllegalArgumentException("adapter can't be null");
+    }
+
+    mRecyclerView.setAdapter(adapter);
+  }
+
+  @Override public void onRefreshCompleted() {
+
+    setIsLoading(false);
+    mRefreshLayout.setRefreshing(false);
+  }
+
+  @Override public void onLoadMoreSucceed(boolean hasMore) {
+
+    mLoadError = false;
+    mHasMore = hasMore;
+    setIsLoading(false);
+
+    if (mLoadMoreUIHandler != null) {
+
+      mLoadMoreUIHandler.onLoadSucceed(hasMore);
+    }
+  }
+
+  @Override public void onLoadMoreFailed(String errorMsg) {
+
+    mLoadError = true;
+    setIsLoading(false);
+
+    if (mLoadMoreUIHandler != null) {
+
+      mLoadMoreUIHandler.onLoadFailed(errorMsg);
+    }
   }
 
   @Override public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -109,25 +230,6 @@ public class PullRecycler extends FrameLayout {
     return super.dispatchTouchEvent(ev);
   }
 
-  private void init(Context context, AttributeSet attrs) {
-
-    mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
-
-    View.inflate(context, R.layout.layout_pull_recycler, this);
-
-    mRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_Layout);
-    mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-
-    mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-
-      @Override public void onRefresh() {
-
-      }
-    });
-
-    mRecyclerView.addOnScrollListener(mOnReachBottomListener);
-  }
-
   /**
    * 是否为上拉操作
    *
@@ -138,7 +240,51 @@ public class PullRecycler extends FrameLayout {
     return mYDown - mLastY >= mTouchSlop;
   }
 
+  /**
+   * 设置当前加载状态
+   *
+   * @param isLoading true 表示正在加载中
+   */
+  private void setIsLoading(boolean isLoading) {
+
+    mIsLoading = isLoading;
+
+    if (!isLoading) {
+      mYDown = 0;
+      mLastY = 0;
+    }
+  }
+
   private void onReachBottom() {
 
+    if (mLoadError) {
+
+      return;
+    }
+
+    prepareToLoadMore();
+  }
+
+  private void prepareToLoadMore() {
+
+    if (mIsLoading) {
+
+      return;
+    }
+
+    if (!mHasMore) {
+
+      return;
+    }
+
+    if (mLoadMoreUIHandler != null) {
+
+      mLoadMoreUIHandler.onLoading();
+    }
+
+    if (mLoadMoreHandler != null) {
+
+      mLoadMoreHandler.onLoadMore();
+    }
   }
 }
