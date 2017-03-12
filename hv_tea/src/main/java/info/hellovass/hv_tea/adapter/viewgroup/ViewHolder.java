@@ -3,6 +3,7 @@ package info.hellovass.hv_tea.adapter.viewgroup;
 import android.content.Context;
 import android.util.SparseArray;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -41,10 +42,17 @@ public final class ViewHolder {
     return (T) view;
   }
 
-  public ViewHolder setText(int resId, CharSequence text) {
+  public ViewHolder setText(int viewId, CharSequence text) {
 
-    TextView textView = getView(resId);
+    TextView textView = getView(viewId);
     textView.setText(text);
+    return this;
+  }
+
+  public ViewHolder setImageResource(int viewId, int resId) {
+
+    ImageView imageView = getView(viewId);
+    imageView.setImageResource(resId);
     return this;
   }
 
