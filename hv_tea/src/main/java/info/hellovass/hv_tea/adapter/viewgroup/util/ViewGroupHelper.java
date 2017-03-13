@@ -1,7 +1,9 @@
-package info.hellovass.hv_tea.adapter.viewgroup;
+package info.hellovass.hv_tea.adapter.viewgroup.util;
 
 import android.view.View;
 import android.view.ViewGroup;
+import info.hellovass.hv_tea.adapter.viewgroup.base.MultiItemTypeAdapter;
+import info.hellovass.hv_tea.adapter.viewgroup.base.ViewGroupAdapter;
 
 /**
  * Created by hello on 2017/2/28.

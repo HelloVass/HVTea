@@ -1,10 +1,12 @@
-package info.hellovass.hv_tea.adapter.viewgroup;
+package info.hellovass.hv_tea.adapter.viewgroup.base;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import info.hellovass.hv_tea.adapter.recyclerview.base.MultiViewTypeAdapter;
+import info.hellovass.hv_tea.adapter.viewgroup.ItemViewDelegateManager;
+import info.hellovass.hv_tea.adapter.viewgroup.ViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 

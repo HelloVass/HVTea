@@ -1,11 +1,12 @@
 package info.hellovass.hv_tea.adapter.viewgroup;
 
 import android.util.SparseArray;
+import info.hellovass.hv_tea.adapter.viewgroup.base.ItemViewDelegate;
 
 /**
  * Created by zhy on 16/6/22.
  */
-public class ItemViewDelegateManager<T> {
+public final class ItemViewDelegateManager<T> {
 
   private SparseArray<ItemViewDelegate<T>> mItemViewDelegateSparseArray = new SparseArray<>();
 

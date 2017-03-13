@@ -1,4 +1,6 @@
-package info.hellovass.hv_tea.adapter.viewgroup;
+package info.hellovass.hv_tea.adapter.viewgroup.base;
+
+import info.hellovass.hv_tea.adapter.viewgroup.ViewHolder;
 
 /**
  * Created by hello on 2017/2/28.

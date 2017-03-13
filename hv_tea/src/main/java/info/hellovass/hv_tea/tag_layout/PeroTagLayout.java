@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import info.hellovass.hv_tea.adapter.viewgroup.ViewGroupAdapter;
+import info.hellovass.hv_tea.adapter.viewgroup.base.ViewGroupAdapter;
 
 /**
  * Created by hello on 2016/12/19.

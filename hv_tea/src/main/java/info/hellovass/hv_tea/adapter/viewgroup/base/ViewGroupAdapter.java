@@ -1,4 +1,4 @@
-package info.hellovass.hv_tea.adapter.viewgroup;
+package info.hellovass.hv_tea.adapter.viewgroup.base;
 
 import android.view.View;
 import android.view.ViewGroup;
