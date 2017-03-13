@@ -57,6 +57,6 @@ public class DefaultLoadMoreView extends RelativeLayout implements ILoadMoreUIHa
   @Override public void onLoadFailed(String errorMsg) {
 
     setVisibility(VISIBLE);
-    mLoadingTextView.setText("加载出错，请点击重试");
+    mLoadingTextView.setText(errorMsg);
   }
 }

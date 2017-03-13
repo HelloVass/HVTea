@@ -3,6 +3,7 @@ package info.hellovass.hv_tea.pullrecycler.base;
 import info.hellovass.hv_tea.pullrecycler.loadmore.ILoadMoreHandler;
 import info.hellovass.hv_tea.pullrecycler.loadmore.ILoadMoreUIHandler;
 import info.hellovass.hv_tea.pullrecycler.refresh.IRefreshHandler;
+import info.hellovass.hv_tea.pullrecycler.refresh.IRefreshUIHandler;
 
 /**
  * Created by hello on 2017/3/11.
@@ -10,7 +11,9 @@ import info.hellovass.hv_tea.pullrecycler.refresh.IRefreshHandler;
 
 public interface IPullRecycler {
 
-  void onRefreshCompleted();
+  void onRefreshSucceed(boolean hasMore);
+
+  void onRefreshFailed(IRefreshUIHandler refreshUIHandler);
 
   void onLoadMoreSucceed(boolean hasMore);
 

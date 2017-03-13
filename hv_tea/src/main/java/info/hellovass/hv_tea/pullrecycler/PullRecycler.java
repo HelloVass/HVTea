@@ -21,6 +21,7 @@ import info.hellovass.hv_tea.pullrecycler.layoutmanager.ILayoutManager;
 import info.hellovass.hv_tea.pullrecycler.loadmore.ILoadMoreHandler;
 import info.hellovass.hv_tea.pullrecycler.loadmore.ILoadMoreUIHandler;
 import info.hellovass.hv_tea.pullrecycler.refresh.IRefreshHandler;
+import info.hellovass.hv_tea.pullrecycler.refresh.IRefreshUIHandler;
 
 /**
  * Created by hellovass on 2017/3/10.
@@ -200,10 +201,25 @@ public class PullRecycler extends FrameLayout
     mRecyclerView.setAdapter(adapter);
   }
 
-  @Override public void onRefreshCompleted() {
+  @Override public void onRefreshSucceed(boolean hasMore) {
 
+    mLoadError = false;
+    mHasMore = hasMore;
     setIsLoading(false);
     mRefreshLayout.setRefreshing(false);
+
+    if (mLoadMoreUIHandler != null) {
+
+      mLoadMoreUIHandler.onLoadSucceed(hasMore);
+    }
+  }
+
+  @Override public void onRefreshFailed(IRefreshUIHandler refreshUIHandler) {
+
+    mLoadError = true;
+    setIsLoading(false);
+    mRefreshLayout.setRefreshing(false);
+    refreshUIHandler.onFailed();
   }
 
   @Override public void onLoadMoreSucceed(boolean hasMore) {

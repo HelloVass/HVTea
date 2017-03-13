@@ -8,7 +8,6 @@ import android.view.View;
 
 public interface ILoadMoreUIHandler {
 
-
   View getConvertView();
 
   void onLoading();
