@@ -8,7 +8,7 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import info.hellovass.hv_tea.adapter.recyclerview.CommonAdapter;
-import info.hellovass.hv_tea.adapter.recyclerview.MultiViewTypeAdapter;
+import info.hellovass.hv_tea.adapter.recyclerview.base.MultiViewTypeAdapter;
 import info.hellovass.hv_tea.adapter.recyclerview.ViewHolder;
 import info.hellovass.hvteademo.dialog.base.CommonDialog;
 import java.util.ArrayList;

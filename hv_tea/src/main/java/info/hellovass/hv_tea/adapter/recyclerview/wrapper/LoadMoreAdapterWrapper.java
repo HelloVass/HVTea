@@ -1,4 +1,4 @@
-package info.hellovass.hv_tea.pullrecycler.base;
+package info.hellovass.hv_tea.adapter.recyclerview.wrapper;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,23 +20,25 @@ public class LoadMoreAdapterWrapper<T> extends RecyclerView.Adapter<RecyclerView
   private View mLoadMoreView;
 
   public LoadMoreAdapterWrapper(RecyclerView.Adapter adapter) {
-
     mAdapter = adapter;
   }
 
-  public LoadMoreAdapterWrapper setLoadMoreView(View view) {
+  public void setLoadMoreView(View loadMoreView, ViewGroup.LayoutParams layoutParams) {
 
-    if (view == null) {
+    if (loadMoreView == null) {
 
-      throw new IllegalArgumentException("view can't be null");
+      throw new IllegalArgumentException("loadMoreView can't be null");
     }
 
-    mLoadMoreView = view;
-    return this;
+    loadMoreView.setLayoutParams(layoutParams);
+    mLoadMoreView = loadMoreView;
   }
 
-  @Override public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+  @SuppressWarnings("unchecked") @Override
+  public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
     super.onViewAttachedToWindow(holder);
+
+    mAdapter.onViewAttachedToWindow(holder);
 
     if (holder.getItemViewType() == ITEM_TYPE_LOAD_MORE) {
 
@@ -54,6 +56,8 @@ public class LoadMoreAdapterWrapper<T> extends RecyclerView.Adapter<RecyclerView
 
   @Override public void onAttachedToRecyclerView(RecyclerView recyclerView) {
     super.onAttachedToRecyclerView(recyclerView);
+
+    mAdapter.onAttachedToRecyclerView(recyclerView);
 
     RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
 

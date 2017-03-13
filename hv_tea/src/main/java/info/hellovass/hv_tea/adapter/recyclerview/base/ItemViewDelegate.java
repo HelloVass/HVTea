@@ -1,4 +1,6 @@
-package info.hellovass.hv_tea.adapter.recyclerview;
+package info.hellovass.hv_tea.adapter.recyclerview.base;
+
+import info.hellovass.hv_tea.adapter.recyclerview.ViewHolder;
 
 /**
  * Created by hello on 2017/2/27.

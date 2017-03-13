@@ -5,13 +5,17 @@ import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import info.hellovass.hv_tea.R;
+import info.hellovass.hv_tea.adapter.recyclerview.wrapper.LoadMoreAdapterWrapper;
 import info.hellovass.hv_tea.pullrecycler.base.IPullRecycler;
 import info.hellovass.hv_tea.pullrecycler.layoutmanager.ILayoutManager;
 import info.hellovass.hv_tea.pullrecycler.loadmore.ILoadMoreHandler;
@@ -39,6 +43,8 @@ public class PullRecycler extends FrameLayout
 
   private IRefreshHandler mRefreshHandler;
 
+  private LoadMoreAdapterWrapper mLoadMoreAdapterWrapper;
+
   private boolean mEnableLoadMore = false;
 
   private boolean mEnableRefresh = false;
@@ -47,7 +53,7 @@ public class PullRecycler extends FrameLayout
 
   private boolean mLoadError = false;
 
-  private boolean mHasMore = false;
+  private boolean mHasMore = true;
 
   private int mTouchSlop = 0;
 
@@ -138,7 +144,13 @@ public class PullRecycler extends FrameLayout
   @Override public void setLoadMoreUIHandler(ILoadMoreUIHandler loadMoreUIHandler) {
 
     if (loadMoreUIHandler == null) {
+
       throw new IllegalArgumentException("loadMoreUIHandler can't be null");
+    }
+
+    if (mLoadMoreAdapterWrapper == null) {
+
+      throw new IllegalStateException("you must call setAdapter method first");
     }
 
     mLoadMoreUIHandler = loadMoreUIHandler;
@@ -148,6 +160,8 @@ public class PullRecycler extends FrameLayout
         prepareToLoadMore();
       }
     });
+    mLoadMoreAdapterWrapper.setLoadMoreView(loadMoreUIHandler.getConvertView(),
+        new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp2px(56.0F)));
   }
 
   @Override public void setLoadMoreHandler(ILoadMoreHandler loadMoreHandler) {
@@ -170,13 +184,19 @@ public class PullRecycler extends FrameLayout
     mRecyclerView.setLayoutManager(layoutManager.getLayoutManager());
   }
 
-  public void setAdapter(RecyclerView.Adapter adapter) {
+  public void addItemDecoration(DividerItemDecoration dividerItemDecoration) {
+
+    mRecyclerView.addItemDecoration(dividerItemDecoration);
+  }
+
+  public void setAdapter(LoadMoreAdapterWrapper adapter) {
 
     if (adapter == null) {
 
       throw new IllegalArgumentException("adapter can't be null");
     }
 
+    mLoadMoreAdapterWrapper = adapter;
     mRecyclerView.setAdapter(adapter);
   }
 
@@ -286,5 +306,11 @@ public class PullRecycler extends FrameLayout
 
       mLoadMoreHandler.onLoadMore();
     }
+  }
+
+  private int dp2px(float dp) {
+
+    return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+        getResources().getDisplayMetrics());
   }
 }

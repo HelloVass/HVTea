@@ -2,6 +2,8 @@ package info.hellovass.hv_tea.adapter.recyclerview;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import info.hellovass.hv_tea.adapter.recyclerview.base.ItemViewDelegate;
+import info.hellovass.hv_tea.adapter.recyclerview.base.MultiViewTypeAdapter;
 import java.util.ArrayList;
 import java.util.List;
 

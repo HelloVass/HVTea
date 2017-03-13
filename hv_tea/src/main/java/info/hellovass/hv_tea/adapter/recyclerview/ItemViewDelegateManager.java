@@ -1,12 +1,13 @@
 package info.hellovass.hv_tea.adapter.recyclerview;
 
 import android.util.SparseArray;
+import info.hellovass.hv_tea.adapter.recyclerview.base.ItemViewDelegate;
 
 /**
  * Created by hello on 2017/2/27.
  */
 
-public class ItemViewDelegateManager<T> {
+public final class ItemViewDelegateManager<T> {
 
   private SparseArray<ItemViewDelegate<T>> mItemViewDelegateSparseArray = new SparseArray<>();
 

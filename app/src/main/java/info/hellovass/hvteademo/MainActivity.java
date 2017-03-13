@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import info.hellovass.hvteademo.gridview.PeroNineGridViewTestActivity;
+import info.hellovass.hvteademo.pullrecycler.PeroPullRecyclerTestActivity;
 
 /**
  * Created by hello on 2016/12/26.
@@ -35,5 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
   @OnClick(R.id.btn_perodialog_test) void turnToPeroDialogTestActivity() {
     startActivity(new Intent(this, PeroDialogTestActivity.class));
+  }
+
+  @OnClick(R.id.btn_peropullrecycler_test) void turnToPeroPullRecyclerTestActivity() {
+    startActivity(new Intent(this, PeroPullRecyclerTestActivity.class));
   }
 }

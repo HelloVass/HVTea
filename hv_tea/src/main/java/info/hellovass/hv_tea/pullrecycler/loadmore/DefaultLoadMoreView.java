@@ -32,10 +32,12 @@ public class DefaultLoadMoreView extends RelativeLayout implements ILoadMoreUIHa
   }
 
   @Override public View getConvertView() {
+
     return this;
   }
 
   @Override public void onLoading() {
+
     setVisibility(VISIBLE);
     mLoadingTextView.setText("加载中...");
   }
@@ -43,9 +45,11 @@ public class DefaultLoadMoreView extends RelativeLayout implements ILoadMoreUIHa
   @Override public void onLoadSucceed(boolean hasMore) {
 
     if (!hasMore) {
+
       setVisibility(VISIBLE);
       mLoadingTextView.setText("没有更多数据啦");
     } else {
+
       setVisibility(GONE);
     }
   }
