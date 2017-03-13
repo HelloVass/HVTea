@@ -45,7 +45,7 @@
     </activity>
 
     <activity
-        android:name=".pullrecycler.PeroPullRecyclerTestActivity"
+        android:name=".pullercycler.PeroPullRecyclerTestActivity"
         android:label="PeroPullRecycler 测试">
 
     </activity>

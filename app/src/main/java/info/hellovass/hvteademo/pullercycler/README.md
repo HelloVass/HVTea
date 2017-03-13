@@ -114,7 +114,7 @@ Step4. 调用相应的 API
   	void onLoadMoreFailed(String errorMsg);
 ```
 
-具体使用还是请参考 demo
+具体使用还是请参考 demo 
 
 
 ### 支持点击事件,由 adapter 库提供

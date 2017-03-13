@@ -1,4 +1,4 @@
-package info.hellovass.hvteademo.pullrecycler;
+package info.hellovass.hvteademo.pullercycler;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -120,7 +120,6 @@ public class PeroPullRecyclerTestActivity extends AppCompatActivity {
         return true;
       }
     });
-
     mLoadMoreAdapterWrapper = new LoadMoreAdapterWrapper<>(adapter); // 用 loadMoreAdapter 装饰
 
     mPullRecycler.setAdapter(mLoadMoreAdapterWrapper);
