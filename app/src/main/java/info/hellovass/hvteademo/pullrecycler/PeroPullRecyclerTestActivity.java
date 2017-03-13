@@ -50,11 +50,11 @@ public class PeroPullRecyclerTestActivity extends AppCompatActivity {
   private void initWidgets() {
 
     mPullRecycler.setLayoutManager(new MyLinearLayoutManager(this));
-    mPullRecycler.setEnableRefresh(true); // 启用下拉刷新
-    mPullRecycler.enableLoadMore(true); // 启用 loadmore
     mPullRecycler.addItemDecoration(
         new DividerItemDecoration(this, DividerItemDecoration.VERTICAL)); // 设置分割线
-    mPullRecycler.setRefreshHandler(new IRefreshHandler() { // 下拉刷新回调
+
+    mPullRecycler.setEnableRefresh(true); // 启用下拉刷新
+    mPullRecycler.setRefreshHandler(new IRefreshHandler() { // 设置下拉刷新回调
 
       @Override public void onRefresh() {
 
@@ -70,8 +70,9 @@ public class PeroPullRecyclerTestActivity extends AppCompatActivity {
         }
       }
     });
-    // 加载更多回调
-    mPullRecycler.setLoadMoreHandler(new ILoadMoreHandler() {
+
+    mPullRecycler.enableLoadMore(true); // 启用 loadmore
+    mPullRecycler.setLoadMoreHandler(new ILoadMoreHandler() { // 加载更多回调
 
       @Override public void onLoadMore() {
 
