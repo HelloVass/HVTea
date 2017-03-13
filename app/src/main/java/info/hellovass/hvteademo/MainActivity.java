@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import info.hellovass.hvteademo.gridview.PeroNineGridViewTestActivity;
-import info.hellovass.hvteademo.pullercycler.PeroPullRecyclerTestActivity;
+import info.hellovass.hvteademo.pullrecycler.PeroPullRecyclerTestActivity;
 
 /**
  * Created by hello on 2016/12/26.
