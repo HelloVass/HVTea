@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical"
     >
 
@@ -16,7 +17,6 @@
       android:id="@+id/pb_progressbar"
       android:layout_width="28dp"
       android:layout_height="28dp"
-      android:layout_gravity="center_horizontal"
       />
 
   <TextView

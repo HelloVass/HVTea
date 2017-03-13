@@ -50,6 +50,12 @@
 
     </activity>
 
+    <activity
+        android:name=".PeroEmptyLayoutTestActivity"
+        android:label="PeroEmptyLayout 测试">
+
+    </activity>
+
   </application>
 
 </manifest>

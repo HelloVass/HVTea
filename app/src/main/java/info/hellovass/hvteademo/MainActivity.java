@@ -41,4 +41,8 @@ public class MainActivity extends AppCompatActivity {
   @OnClick(R.id.btn_peropullrecycler_test) void turnToPeroPullRecyclerTestActivity() {
     startActivity(new Intent(this, PeroPullRecyclerTestActivity.class));
   }
+
+  @OnClick(R.id.btn_peroemptylayout_test) void turnToPeroEmptyLayoutTestActivity() {
+    startActivity(new Intent(this, PeroEmptyLayoutTestActivity.class));
+  }
 }

@@ -1,4 +1,4 @@
-package info.hellovass.hv_tea.emptyview;
+package info.hellovass.hv_tea.emptylayout;
 
 import android.content.Context;
 import android.support.annotation.AttrRes;
@@ -9,15 +9,16 @@ import android.view.View;
 import android.widget.LinearLayout;
 import info.hellovass.hv_tea.R;
 import info.hellovass.hv_tea.adapter.viewgroup.ViewHolder;
-import info.hellovass.hv_tea.emptyview.state.CompletedState;
-import info.hellovass.hv_tea.emptyview.state.ErrorState;
-import info.hellovass.hv_tea.emptyview.state.LoadingState;
+import info.hellovass.hv_tea.emptylayout.state.CompletedState;
+import info.hellovass.hv_tea.emptylayout.state.ErrorState;
+import info.hellovass.hv_tea.emptylayout.state.IdleState;
+import info.hellovass.hv_tea.emptylayout.state.LoadingState;
 
 /**
  * Created by hello on 2017/3/11.
  */
 
-public class EmptyLayout extends LinearLayout {
+public class EmptyLayout extends LinearLayout implements View.OnClickListener {
 
   private State mLoadingState;
 
@@ -26,6 +27,8 @@ public class EmptyLayout extends LinearLayout {
   private State mCompletedState;
 
   private State mCurrentState;
+
+  private OnReloadListener mOnReloadListener;
 
   public EmptyLayout(@NonNull Context context) {
     this(context, null);
@@ -49,12 +52,22 @@ public class EmptyLayout extends LinearLayout {
 
     mLoadingState = new LoadingState(holder);
     mCompletedState = new CompletedState(holder);
-    mErrorState = new ErrorState(holder);
+    mErrorState = new ErrorState(holder, mOnReloadListener);
+
+    // 设置初始化状态
+    mCurrentState = new IdleState(holder);
+    mCurrentState.idle();
+
+    setOnClickListener(this);
   }
 
   public void setCurrentState(State currentState) {
 
     mCurrentState = currentState;
+  }
+
+  public void setOnReloadListener(OnReloadListener onReloadListener) {
+    mOnReloadListener = onReloadListener;
   }
 
   public void onLoading() {
@@ -63,7 +76,7 @@ public class EmptyLayout extends LinearLayout {
     mCurrentState.onLoading();
   }
 
-  public void onCompleted(int imgResId, String errorMsg) {
+  public void onCompleted() {
 
     setCurrentState(mCompletedState);
     mCompletedState.onCompleted();
@@ -75,11 +88,33 @@ public class EmptyLayout extends LinearLayout {
     mErrorState.onError(imageResId, errorMsg);
   }
 
+  @Override public void onClick(View v) {
+
+    if (!mCurrentState.shouldReload()) {
+
+      return;
+    }
+
+    if (mOnReloadListener != null) {
+
+      mOnReloadListener.onReload();
+    }
+  }
+
+  public interface OnReloadListener {
+
+    void onReload();
+  }
+
   public interface State {
+
+    void idle();
 
     void onLoading();
 
     void onError(int imgResId, String errorMsg);
+
+    boolean shouldReload();
 
     void onCompleted();
   }

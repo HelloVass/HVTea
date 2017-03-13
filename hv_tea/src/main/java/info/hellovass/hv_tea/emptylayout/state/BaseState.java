@@ -1,7 +1,7 @@
-package info.hellovass.hv_tea.emptyview.state;
+package info.hellovass.hv_tea.emptylayout.state;
 
 import info.hellovass.hv_tea.adapter.viewgroup.ViewHolder;
-import info.hellovass.hv_tea.emptyview.EmptyLayout;
+import info.hellovass.hv_tea.emptylayout.EmptyLayout;
 
 /**
  * Created by hello on 2017/3/12.

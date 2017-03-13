@@ -1,6 +1,5 @@
-package info.hellovass.hv_tea.emptyview.state;
+package info.hellovass.hv_tea.emptylayout.state;
 
-import android.support.annotation.LayoutRes;
 import android.view.View;
 import info.hellovass.hv_tea.adapter.viewgroup.ViewHolder;
 
@@ -14,12 +13,21 @@ public class CompletedState extends BaseState {
     super(viewHolder);
   }
 
+  @Override public void idle() {
+
+  }
+
   @Override public void onLoading() {
 
   }
 
-  @Override public void onError(@LayoutRes int imgResId, String errorMsg) {
+  @Override public void onError(int imgResId, String errorMsg) {
 
+  }
+
+  @Override public boolean shouldReload() {
+
+    return false;
   }
 
   @Override public void onCompleted() {

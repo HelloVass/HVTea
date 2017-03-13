@@ -56,6 +56,13 @@ public final class ViewHolder {
     return this;
   }
 
+  public ViewHolder ifVisible(int viewId, boolean visible) {
+
+    View view = getView(viewId);
+    view.setVisibility(visible ? View.VISIBLE : View.GONE);
+    return this;
+  }
+
   public View getConvertView() {
 
     return mConvertView;
