@@ -56,6 +56,11 @@
 
     </activity>
 
+    <activity
+        android:name="info.hellovass.hv_tea.permissions.PermissionsActivity">
+
+    </activity>
+
   </application>
 
 </manifest>

@@ -1,3 +1,7 @@
 <resources>
+
   <string name="app_name">hv_tea</string>
+  <string name="help">帮助</string>
+  <string name="help_content">Pero 缺少必要权限。\n\n请点击\"设置\"-\"权限\"-打开所需权限。\n\n最后点击两次后退按钮，即可返回。</string>
+
 </resources>
