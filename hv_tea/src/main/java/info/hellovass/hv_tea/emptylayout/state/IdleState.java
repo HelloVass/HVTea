@@ -15,11 +15,18 @@ public class IdleState extends BaseState {
     super(viewHolder);
   }
 
-  @Override public void idle() {
+  @Override public void reset() {
 
-    mViewHolder.ifVisible(R.id.iv_img, false);
-    mViewHolder.ifVisible(R.id.pb_progressbar, false);
-    mViewHolder.ifVisible(R.id.tv_title, false);
+    ViewHolder viewHolder = mViewHolderWeakReference.get();
+
+    if (viewHolder == null) {
+
+      return;
+    }
+
+    viewHolder.ifVisible(R.id.iv_img, false);
+    viewHolder.ifVisible(R.id.pb_progressbar, false);
+    viewHolder.ifVisible(R.id.tv_title, false);
   }
 
   @Override public void onLoading() {

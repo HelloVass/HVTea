@@ -16,7 +16,7 @@ public class ErrorState extends BaseState {
     super(viewHolder);
   }
 
-  @Override public void idle() {
+  @Override public void reset() {
 
   }
 
@@ -26,15 +26,22 @@ public class ErrorState extends BaseState {
 
   @Override public void onError(int imgResId, String errorMsg) {
 
-    mViewHolder.getConvertView().setVisibility(View.VISIBLE);
+    ViewHolder viewHolder = mViewHolderWeakReference.get();
 
-    mViewHolder.ifVisible(R.id.iv_img, true);
-    mViewHolder.setImageResource(R.id.iv_img, imgResId);
+    if (viewHolder == null) {
 
-    mViewHolder.ifVisible(R.id.pb_progressbar, false);
+      return;
+    }
 
-    mViewHolder.ifVisible(R.id.tv_title, true);
-    mViewHolder.setText(R.id.tv_title, errorMsg);
+    viewHolder.getConvertView().setVisibility(View.VISIBLE);
+
+    viewHolder.ifVisible(R.id.iv_img, true);
+    viewHolder.setImageResource(R.id.iv_img, imgResId);
+
+    viewHolder.ifVisible(R.id.pb_progressbar, false);
+
+    viewHolder.ifVisible(R.id.tv_title, true);
+    viewHolder.setText(R.id.tv_title, errorMsg);
   }
 
   @Override public boolean shouldReload() {

@@ -16,17 +16,24 @@ public class LoadingState extends BaseState {
     super(viewHolder);
   }
 
-  @Override public void idle() {
+  @Override public void reset() {
 
   }
 
   @Override public void onLoading() {
 
-    mViewHolder.getConvertView().setVisibility(View.VISIBLE);
+    ViewHolder viewHolder = mViewHolderWeakReference.get();
 
-    mViewHolder.ifVisible(R.id.iv_img, false);
-    mViewHolder.ifVisible(R.id.pb_progressbar, true);
-    mViewHolder.setText(R.id.tv_title, "加载中...");
+    if (viewHolder == null) {
+
+      return;
+    }
+
+    viewHolder.getConvertView().setVisibility(View.VISIBLE);
+
+    viewHolder.ifVisible(R.id.iv_img, false);
+    viewHolder.ifVisible(R.id.pb_progressbar, true);
+    viewHolder.setText(R.id.tv_title, "加载中...");
   }
 
   @Override public void onError(int imgResId, String errorMsg) {

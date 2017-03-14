@@ -15,7 +15,7 @@ public class CompletedState extends BaseState {
     super(viewHolder);
   }
 
-  @Override public void idle() {
+  @Override public void reset() {
 
   }
 
@@ -34,6 +34,13 @@ public class CompletedState extends BaseState {
 
   @Override public void onCompleted() {
 
-    mViewHolder.getConvertView().setVisibility(View.GONE);
+    ViewHolder viewHolder = mViewHolderWeakReference.get();
+
+    if (viewHolder == null) {
+
+      return;
+    }
+
+    viewHolder.getConvertView().setVisibility(View.GONE);
   }
 }

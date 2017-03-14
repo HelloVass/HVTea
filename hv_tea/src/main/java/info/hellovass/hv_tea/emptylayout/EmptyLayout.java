@@ -22,6 +22,8 @@ import info.hellovass.hv_tea.emptylayout.state.LoadingState;
 
 public class EmptyLayout extends LinearLayout implements View.OnClickListener {
 
+  private State mIdleState;
+
   private State mLoadingState;
 
   private State mCompletedState;
@@ -58,14 +60,14 @@ public class EmptyLayout extends LinearLayout implements View.OnClickListener {
     ViewHolder holder =
         ViewHolder.create(context, View.inflate(context, R.layout.layout_empty, this));
 
+    setOnClickListener(this); // 设置点击回调
+
+    mIdleState = new IdleState(holder);
     mLoadingState = new LoadingState(holder);
     mCompletedState = new CompletedState(holder);
     mErrorState = new ErrorState(holder);
 
-    mCurrentState = new IdleState(holder); // 设置初始化状态
-    mCurrentState.idle();
-
-    setOnClickListener(this);
+    reset();
   }
 
   public void setCurrentState(State currentState) {
@@ -75,36 +77,49 @@ public class EmptyLayout extends LinearLayout implements View.OnClickListener {
 
   public void setOnReloadListener(OnReloadListener onReloadListener) {
 
-    if (onReloadListener == null) {
-
-      throw new IllegalArgumentException("onReloadListener can't be null");
-    }
-
     mOnReloadListener = onReloadListener;
+  }
+
+  public void reset() {
+
+    if (mIdleState != null) {
+
+      setCurrentState(mIdleState);
+      mCurrentState.reset();
+    }
   }
 
   public void onLoading() {
 
-    setCurrentState(mLoadingState);
-    mCurrentState.onLoading();
+    if (mLoadingState != null) {
+
+      setCurrentState(mLoadingState);
+      mCurrentState.onLoading();
+    }
   }
 
   public void onCompleted() {
 
-    setCurrentState(mCompletedState);
-    mCompletedState.onCompleted();
+    if (mCompletedState != null) {
+
+      setCurrentState(mCompletedState);
+      mCurrentState.onCompleted();
+    }
   }
 
   public void onError(int imageResId, String errorMsg) {
 
-    setCurrentState(mErrorState);
-    mErrorState.onError(imageResId, errorMsg);
+    if (mErrorState != null) {
+
+      setCurrentState(mErrorState);
+      mCurrentState.onError(imageResId, errorMsg);
+    }
   }
 
   @Override public void onClick(View v) {
 
     // 只有“当前状态允许转换到 loading 状态”并且 OnReloadListener 不为空，才可以执行 onReload 方法
-    if (mCurrentState.shouldReload() && mOnReloadListener != null) {
+    if (mCurrentState != null && mCurrentState.shouldReload() && mOnReloadListener != null) {
 
       mOnReloadListener.onReload();
     }
@@ -112,11 +127,14 @@ public class EmptyLayout extends LinearLayout implements View.OnClickListener {
 
   private void release() {
 
+    mIdleState = null;
     mLoadingState = null;
     mCompletedState = null;
     mErrorState = null;
+
     mCurrentState = null;
-    mOnReloadListener = null;
+
+    setOnReloadListener(null);
     setOnClickListener(null);
   }
 
@@ -127,10 +145,22 @@ public class EmptyLayout extends LinearLayout implements View.OnClickListener {
 
   public interface State {
 
-    void idle();
+    /**
+     * 重置 EmptyLayout，进入 Idle 状态
+     */
+    void reset();
 
+    /**
+     * 进入加载中状态
+     */
     void onLoading();
 
+    /**
+     * 进入错误状态
+     *
+     * @param imgResId 图片资源 Id
+     * @param errorMsg 抛给用户的错误信息
+     */
     void onError(int imgResId, String errorMsg);
 
     /**
@@ -140,6 +170,9 @@ public class EmptyLayout extends LinearLayout implements View.OnClickListener {
      */
     boolean shouldReload();
 
+    /**
+     * 加载完成状态
+     */
     void onCompleted();
   }
 }
