@@ -16,15 +16,17 @@ import info.hellovass.hv_tea.emptylayout.state.LoadingState;
 
 /**
  * Created by hello on 2017/3/11.
+ *
+ * 处理各种状态的组件
  */
 
 public class EmptyLayout extends LinearLayout implements View.OnClickListener {
 
   private State mLoadingState;
 
-  private State mErrorState;
-
   private State mCompletedState;
+
+  private State mErrorState;
 
   private State mCurrentState;
 
@@ -45,6 +47,12 @@ public class EmptyLayout extends LinearLayout implements View.OnClickListener {
     init(context, attrs);
   }
 
+  @Override protected void onDetachedFromWindow() {
+    super.onDetachedFromWindow();
+
+    release();
+  }
+
   private void init(Context context, AttributeSet attrs) {
 
     ViewHolder holder =
@@ -52,10 +60,9 @@ public class EmptyLayout extends LinearLayout implements View.OnClickListener {
 
     mLoadingState = new LoadingState(holder);
     mCompletedState = new CompletedState(holder);
-    mErrorState = new ErrorState(holder, mOnReloadListener);
+    mErrorState = new ErrorState(holder);
 
-    // 设置初始化状态
-    mCurrentState = new IdleState(holder);
+    mCurrentState = new IdleState(holder); // 设置初始化状态
     mCurrentState.idle();
 
     setOnClickListener(this);
@@ -67,6 +74,12 @@ public class EmptyLayout extends LinearLayout implements View.OnClickListener {
   }
 
   public void setOnReloadListener(OnReloadListener onReloadListener) {
+
+    if (onReloadListener == null) {
+
+      throw new IllegalArgumentException("onReloadListener can't be null");
+    }
+
     mOnReloadListener = onReloadListener;
   }
 
@@ -90,15 +103,21 @@ public class EmptyLayout extends LinearLayout implements View.OnClickListener {
 
   @Override public void onClick(View v) {
 
-    if (!mCurrentState.shouldReload()) {
-
-      return;
-    }
-
-    if (mOnReloadListener != null) {
+    // 只有“当前状态允许转换到 loading 状态”并且 OnReloadListener 不为空，才可以执行 onReload 方法
+    if (mCurrentState.shouldReload() && mOnReloadListener != null) {
 
       mOnReloadListener.onReload();
     }
+  }
+
+  private void release() {
+
+    mLoadingState = null;
+    mCompletedState = null;
+    mErrorState = null;
+    mCurrentState = null;
+    mOnReloadListener = null;
+    setOnClickListener(null);
   }
 
   public interface OnReloadListener {
@@ -114,6 +133,11 @@ public class EmptyLayout extends LinearLayout implements View.OnClickListener {
 
     void onError(int imgResId, String errorMsg);
 
+    /**
+     * 当前状态是否可以进入 loading 状态
+     *
+     * @return true 表示可以，false 则不能
+     */
     boolean shouldReload();
 
     void onCompleted();

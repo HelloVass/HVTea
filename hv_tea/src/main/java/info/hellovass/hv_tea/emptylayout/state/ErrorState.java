@@ -3,20 +3,17 @@ package info.hellovass.hv_tea.emptylayout.state;
 import android.view.View;
 import info.hellovass.hv_tea.R;
 import info.hellovass.hv_tea.adapter.viewgroup.ViewHolder;
-import info.hellovass.hv_tea.emptylayout.EmptyLayout;
 
 /**
  * Created by hello on 2017/3/11.
+ *
+ * 错误状态
  */
 
 public class ErrorState extends BaseState {
 
-  private EmptyLayout.OnReloadListener mOnReloadListener;
-
-  public ErrorState(ViewHolder viewHolder, EmptyLayout.OnReloadListener onReloadListener) {
+  public ErrorState(ViewHolder viewHolder) {
     super(viewHolder);
-
-    mOnReloadListener = onReloadListener;
   }
 
   @Override public void idle() {

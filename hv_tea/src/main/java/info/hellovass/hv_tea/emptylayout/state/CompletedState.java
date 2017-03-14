@@ -5,6 +5,8 @@ import info.hellovass.hv_tea.adapter.viewgroup.ViewHolder;
 
 /**
  * Created by hello on 2017/3/11.
+ *
+ * 完成状态
  */
 
 public class CompletedState extends BaseState {
