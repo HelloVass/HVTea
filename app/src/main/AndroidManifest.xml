@@ -61,6 +61,12 @@
 
     </activity>
 
+    <activity
+        android:label="SimpleSnackbar 测试"
+        android:name=".SimpleSnackbarTestActivity">
+
+    </activity>
+
   </application>
 
 </manifest>

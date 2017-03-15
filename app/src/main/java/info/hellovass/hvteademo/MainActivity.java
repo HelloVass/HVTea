@@ -45,4 +45,8 @@ public class MainActivity extends AppCompatActivity {
   @OnClick(R.id.btn_peroemptylayout_test) void turnToPeroEmptyLayoutTestActivity() {
     startActivity(new Intent(this, PeroEmptyLayoutTestActivity.class));
   }
+
+  @OnClick(R.id.btn_simplesnackbar_test) void turnToSimpleSnackbarTestActivity() {
+    startActivity(new Intent(this, SimpleSnackbarTestActivity.class));
+  }
 }
