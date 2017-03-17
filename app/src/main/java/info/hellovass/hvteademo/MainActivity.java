@@ -49,4 +49,8 @@ public class MainActivity extends AppCompatActivity {
   @OnClick(R.id.btn_simplesnackbar_test) void turnToSimpleSnackbarTestActivity() {
     startActivity(new Intent(this, SimpleSnackbarTestActivity.class));
   }
+
+  @OnClick(R.id.btn_spring_test) void turnToSpringTestActivity() {
+    startActivity(new Intent(this, SupportSpringTestActivity.class));
+  }
 }

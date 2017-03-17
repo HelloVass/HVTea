@@ -62,8 +62,14 @@
     </activity>
 
     <activity
-        android:label="SimpleSnackbar 测试"
-        android:name=".SimpleSnackbarTestActivity">
+        android:name=".SimpleSnackbarTestActivity"
+        android:label="SimpleSnackbar 测试">
+
+    </activity>
+
+    <activity
+        android:name=".SupportSpringTestActivity"
+        android:label="弹簧动画测试">
 
     </activity>
 
