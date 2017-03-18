@@ -56,15 +56,15 @@ public class SupportSpringTestActivity extends AppCompatActivity {
 
           case MotionEvent.ACTION_DOWN:
 
-            mDownX = event.getX();
-            mDownY = event.getY();
+            mDownX = event.getRawX();
+            mDownY = event.getRawY();
             return true;
 
           case MotionEvent.ACTION_MOVE:
 
             mVelocityTracker.computeCurrentVelocity(1000, mMaxVelocity);
-            mTestImageView.setTranslationX(event.getX() - mDownX);
-            mTestImageView.setTranslationY(event.getY() - mDownY);
+            mTestImageView.setTranslationX(event.getRawX() - mDownX);
+            mTestImageView.setTranslationY(event.getRawY() - mDownY);
             return true;
 
           case MotionEvent.ACTION_UP:
