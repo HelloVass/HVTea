@@ -38,7 +38,7 @@ public final class ViewGroupHelper {
 
       viewGroup.addView(itemView);
 
-      if (onItemClickListener != null) {
+      if (onItemClickListener != null && !itemView.isClickable()) {
 
         final int position = index;
 
@@ -51,7 +51,7 @@ public final class ViewGroupHelper {
         });
       }
 
-      if (onItemLongClickListener != null) {
+      if (onItemLongClickListener != null && !itemView.isLongClickable()) {
 
         final int position = index;
 
