@@ -18,6 +18,7 @@ import info.hellovass.hv_tea.R;
 import info.hellovass.hv_tea.adapter.recyclerview.wrapper.LoadMoreAdapterWrapper;
 import info.hellovass.hv_tea.pullrecycler.base.IPullRecycler;
 import info.hellovass.hv_tea.pullrecycler.layoutmanager.ILayoutManager;
+import info.hellovass.hv_tea.pullrecycler.loadmore.DefaultLoadMoreView;
 import info.hellovass.hv_tea.pullrecycler.loadmore.ILoadMoreHandler;
 import info.hellovass.hv_tea.pullrecycler.loadmore.ILoadMoreUIHandler;
 import info.hellovass.hv_tea.pullrecycler.refresh.IRefreshHandler;
@@ -161,6 +162,7 @@ public class PullRecycler extends FrameLayout
         prepareToLoadMore();
       }
     });
+
     mLoadMoreAdapterWrapper.setLoadMoreView(loadMoreUIHandler.getConvertView(),
         new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp2px(56.0F)));
   }
@@ -198,6 +200,7 @@ public class PullRecycler extends FrameLayout
     }
 
     mLoadMoreAdapterWrapper = adapter;
+    setLoadMoreUIHandler(new DefaultLoadMoreView(getContext()));
     mRecyclerView.setAdapter(adapter);
   }
 

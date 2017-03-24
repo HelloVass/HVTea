@@ -5,20 +5,23 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import info.hellovass.hv_tea.adapter.recyclerview.CommonAdapter;
 import info.hellovass.hv_tea.adapter.recyclerview.ViewHolder;
 import info.hellovass.hv_tea.adapter.recyclerview.base.MultiViewTypeAdapter;
+import info.hellovass.hv_tea.adapter.recyclerview.wrapper.HeaderAndFooterAdapterWrapper;
 import info.hellovass.hv_tea.adapter.recyclerview.wrapper.LoadMoreAdapterWrapper;
 import info.hellovass.hv_tea.pullrecycler.PullRecycler;
 import info.hellovass.hv_tea.pullrecycler.layoutmanager.MyLinearLayoutManager;
-import info.hellovass.hv_tea.pullrecycler.loadmore.DefaultLoadMoreView;
 import info.hellovass.hv_tea.pullrecycler.loadmore.ILoadMoreHandler;
 import info.hellovass.hv_tea.pullrecycler.refresh.IRefreshHandler;
 import info.hellovass.hv_tea.pullrecycler.refresh.IRefreshUIHandler;
+import info.hellovass.hv_tea.utils.DensityUtil;
 import info.hellovass.hvteademo.R;
 import java.util.ArrayList;
 import java.util.List;
@@ -120,10 +123,23 @@ public class PeroPullRecyclerTestActivity extends AppCompatActivity {
         return true;
       }
     });
-    mLoadMoreAdapterWrapper = new LoadMoreAdapterWrapper<>(adapter); // 用 loadMoreAdapter 装饰
+
+    HeaderAndFooterAdapterWrapper<String> headerAndFooterAdapterWrapper =
+        new HeaderAndFooterAdapterWrapper<>(adapter); // 用 HeaderAndFooterAdapterWrapper 装饰
+
+    headerAndFooterAdapterWrapper.addHeaderView(
+        LayoutInflater.from(this).inflate(R.layout.header_listitem, null),
+        new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+            DensityUtil.dip2px(this, 56.0F)));
+
+    headerAndFooterAdapterWrapper.addFooterView(
+        LayoutInflater.from(this).inflate(R.layout.footer_listitem, null),
+        new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+            DensityUtil.dip2px(this, 56.0F)));
+
+    mLoadMoreAdapterWrapper = new LoadMoreAdapterWrapper<>(headerAndFooterAdapterWrapper);
 
     mPullRecycler.setAdapter(mLoadMoreAdapterWrapper);
-    mPullRecycler.setLoadMoreUIHandler(new DefaultLoadMoreView(this)); // 默认 LoadMoreView
   }
 
   // 模拟刷新成功
@@ -188,7 +204,7 @@ public class PeroPullRecyclerTestActivity extends AppCompatActivity {
 
       @Override public void run() {
 
-        mPullRecycler.onLoadMoreFailed("服务器菌懵逼了，请点击重试,阿里嘎多...");
+        mPullRecycler.onLoadMoreFailed("服务器菌懵逼了，请点击重试...");
       }
     }, 2 * 1000);
   }
@@ -200,7 +216,7 @@ public class PeroPullRecyclerTestActivity extends AppCompatActivity {
 
       @Override public void run() {
 
-        mDataList.add("加载更多数据" + mRandom.nextInt());
+        mDataList.add("加载更多数据:" + mRandom.nextInt());
         mLoadMoreAdapterWrapper.notifyDataSetChanged();
 
         mPullRecycler.onLoadMoreSucceed(false);

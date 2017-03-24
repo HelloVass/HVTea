@@ -12,7 +12,8 @@ import info.hellovass.hv_tea.adapter.recyclerview.ViewHolder;
  * Created by hello on 2017/3/13.
  */
 
-public class HeaderAndFooterAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class HeaderAndFooterAdapterWrapper<String>
+    extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
   private static final int ITEM_TYPE_HEADER_OFFSET = 100000;
 
@@ -29,14 +30,26 @@ public class HeaderAndFooterAdapterWrapper extends RecyclerView.Adapter<Recycler
     mAdapter = adapter;
   }
 
-  public void addHeaderView(View view) {
+  public void addHeaderView(View headerView, ViewGroup.LayoutParams layoutParams) {
 
-    mHeaderViewMap.put(mHeaderViewMap.size() + ITEM_TYPE_HEADER_OFFSET, view);
+    if (headerView == null) {
+
+      throw new IllegalArgumentException("headerView can't be null");
+    }
+
+    headerView.setLayoutParams(layoutParams);
+    mHeaderViewMap.put(mHeaderViewMap.size() + ITEM_TYPE_HEADER_OFFSET, headerView);
   }
 
-  public void addFooterView(View view) {
+  public void addFooterView(View footerView, ViewGroup.LayoutParams layoutParams) {
 
-    mFooterViewMap.put(mFooterViewMap.size() + ITEM_TYPE_FOOTER_OFFSET, view);
+    if (footerView == null) {
+
+      throw new IllegalArgumentException("footerView can't be null");
+    }
+
+    footerView.setLayoutParams(layoutParams);
+    mFooterViewMap.put(mFooterViewMap.size() + ITEM_TYPE_FOOTER_OFFSET, footerView);
   }
 
   @SuppressWarnings("unchecked") @Override
@@ -97,7 +110,7 @@ public class HeaderAndFooterAdapterWrapper extends RecyclerView.Adapter<Recycler
       return mFooterViewMap.keyAt(position - getHeaderViewCount() - getRealItemCount());
     }
 
-    return super.getItemViewType(position - getHeaderViewCount());
+    return mAdapter.getItemViewType(position - getHeaderViewCount());
   }
 
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -126,7 +139,7 @@ public class HeaderAndFooterAdapterWrapper extends RecyclerView.Adapter<Recycler
       return;
     }
 
-    mAdapter.onBindViewHolder(holder, position);
+    mAdapter.onBindViewHolder(holder, position - getHeaderViewCount());
   }
 
   @Override public int getItemCount() {
@@ -149,13 +162,13 @@ public class HeaderAndFooterAdapterWrapper extends RecyclerView.Adapter<Recycler
     return mAdapter.getItemCount();
   }
 
-  private boolean isFooterView(int position) {
-
-    return position >= getHeaderViewCount() + getRealItemCount();
-  }
-
   private boolean isHeaderView(int position) {
 
     return position < getHeaderViewCount();
+  }
+
+  private boolean isFooterView(int position) {
+
+    return position >= getHeaderViewCount() + getRealItemCount();
   }
 }

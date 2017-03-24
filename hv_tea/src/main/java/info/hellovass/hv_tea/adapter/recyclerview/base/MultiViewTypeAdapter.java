@@ -48,13 +48,12 @@ public abstract class MultiViewTypeAdapter<T> extends RecyclerView.Adapter<ViewH
 
     onViewHolderCreated(holder, holder.getConvertView());
 
-    setListener(parent, holder, viewType);
-
     return holder;
   }
 
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
 
+    setListener(holder, position);
     convert(holder, mDataList.get(position));
   }
 
@@ -84,7 +83,7 @@ public abstract class MultiViewTypeAdapter<T> extends RecyclerView.Adapter<ViewH
     return mDataList.size();
   }
 
-  private void setListener(ViewGroup parent, final ViewHolder holder, int viewType) {
+  private void setListener(final ViewHolder holder, final int position) {
 
     holder.getConvertView().setOnClickListener(new View.OnClickListener() {
 
@@ -92,7 +91,6 @@ public abstract class MultiViewTypeAdapter<T> extends RecyclerView.Adapter<ViewH
 
         if (mOnItemClickListener != null) {
 
-          int position = holder.getAdapterPosition();
           mOnItemClickListener.onItemClick(v, mDataList.get(position), position);
         }
       }
