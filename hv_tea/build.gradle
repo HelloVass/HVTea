@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'org.greenrobot.greendao'
+
 
 android {
   compileSdkVersion 25
@@ -21,6 +23,13 @@ android {
   }
 }
 
+greendao {
+  schemaVersion 1
+  daoPackage 'info.hellovass.hv_tea.db.greendao'
+  targetGenDir 'src/main/java'
+}
+
+
 dependencies {
   compile fileTree(include: ['*.jar'], dir: 'libs')
   androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -32,4 +41,6 @@ dependencies {
   compile 'com.android.support:recyclerview-v7:25.3.0'
   compile 'com.android.support:design:25.3.0'
   compile 'com.android.support:support-dynamic-animation:25.3.0'
+  compile 'org.greenrobot:greendao:3.2.0'
+  compile 'org.greenrobot:greendao-generator:3.2.0'
 }
