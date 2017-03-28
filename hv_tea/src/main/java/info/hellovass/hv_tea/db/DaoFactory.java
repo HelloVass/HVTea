@@ -9,5 +9,5 @@ import org.greenrobot.greendao.AbstractDao;
 
 public interface DaoFactory<T, K> {
 
-  AbstractDao<T, K> createDBEngine(Context context,String dbName);
+  AbstractDao<T, K> createDao(Context context,String dbName);
 }

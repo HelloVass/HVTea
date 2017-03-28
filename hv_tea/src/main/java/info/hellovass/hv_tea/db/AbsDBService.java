@@ -8,15 +8,15 @@ import org.greenrobot.greendao.AbstractDao;
  * Created by hello on 2017/3/25.
  */
 
-public abstract class BaseDBService<T, K> implements DataSource<T> {
+public abstract class AbsDBService<T, K> implements DataSource<T> {
 
   private static final int DEFAULT_PAGE_SIZE = 10;
 
   protected AbstractDao<T, K> mAbstractDao;
 
-  public BaseDBService(Context context, String dbName) {
+  public AbsDBService(Context context, String dbName) {
 
-    mAbstractDao = provideDBFactory().createDBEngine(context, dbName);
+    mAbstractDao = provideDaoFactory().createDao(context, dbName);
   }
 
   @Override public void add(T data) {
@@ -83,5 +83,5 @@ public abstract class BaseDBService<T, K> implements DataSource<T> {
     mAbstractDao.deleteAll();
   }
 
-  public abstract DaoFactory<T, K> provideDBFactory();
+  public abstract DaoFactory<T, K> provideDaoFactory();
 }
