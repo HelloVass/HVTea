@@ -39,6 +39,15 @@ public class PeroShareDelegate {
         .share();
   }
 
+  public void share(Activity activity, SHARE_MEDIA platform, String text,
+      UMShareListener shareListener) {
+
+    new ShareAction(activity).setPlatform(platform)
+        .withText(text)
+        .setCallback(shareListener)
+        .share();
+  }
+
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
     mUMShareAPI.onActivityResult(requestCode, resultCode, data);

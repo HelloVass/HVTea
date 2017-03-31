@@ -109,9 +109,9 @@ public class ShareDialog extends CommonDialog {
     return targetList;
   }
 
-  public void setSharePlatformListener(ChooseSharePlatformListener sharePlatformListener) {
-
+  public ShareDialog setSharePlatformListener(ChooseSharePlatformListener sharePlatformListener) {
     mSharePlatformListener = sharePlatformListener;
+    return this;
   }
 
   public interface ChooseSharePlatformListener {
