@@ -6,9 +6,9 @@ import com.umeng.socialize.PlatformConfig;
  * Created by hello on 2017/3/31.
  */
 
-public class ConfigHelper {
+public class PeroShareConfigHelper {
 
-  private ConfigHelper() {
+  private PeroShareConfigHelper() {
 
   }
 
@@ -17,8 +17,8 @@ public class ConfigHelper {
     PlatformConfig.setWeixin(appId, appSecret);
   }
 
-  public static void configSinaPlatform(String appKey, String appSecret) {
+  public static void configSinaPlatform(String appKey, String appSecret, String redirectUrl) {
 
-    PlatformConfig.setSinaWeibo(appKey, appSecret, "");
+    PlatformConfig.setSinaWeibo(appKey, appSecret, redirectUrl);
   }
 }
