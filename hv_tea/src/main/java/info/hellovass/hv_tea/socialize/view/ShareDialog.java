@@ -1,7 +1,6 @@
 package info.hellovass.hv_tea.socialize.view;
 
 import android.content.Context;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -22,7 +21,7 @@ public class ShareDialog extends CommonDialog {
   private ChooseSharePlatformListener mSharePlatformListener;
 
   public ShareDialog(Context context) {
-    super(context);
+    this(context, R.style.CommonDialog);
     init();
   }
 
@@ -31,21 +30,12 @@ public class ShareDialog extends CommonDialog {
     init();
   }
 
-  protected ShareDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
-    super(context, cancelable, cancelListener);
-    init();
-  }
-
   private void init() {
 
     View shareView = getLayoutInflater().inflate(R.layout.dialog_share, null);
 
     RecyclerView recyclerView = (RecyclerView) shareView.findViewById(R.id.recyclerview);
-
     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-    recyclerView.addItemDecoration(
-        new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-    recyclerView.setHasFixedSize(true);
 
     CommonAdapter<Target> adapter =
         new CommonAdapter<Target>(getContext(), R.layout.listitem_dialog_share,
@@ -94,7 +84,7 @@ public class ShareDialog extends CommonDialog {
 
     recyclerView.setAdapter(adapter);
 
-    setContent(shareView);
+    setContent(shareView, 0);
   }
 
   private List<Target> provideActionList() {
