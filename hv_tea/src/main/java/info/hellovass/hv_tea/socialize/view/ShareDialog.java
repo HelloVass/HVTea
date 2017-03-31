@@ -38,9 +38,9 @@ public class ShareDialog extends CommonDialog {
 
   private void init() {
 
-    View view = getLayoutInflater().inflate(R.layout.dialog_share, null);
+    View shareView = getLayoutInflater().inflate(R.layout.dialog_share, null);
 
-    RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
+    RecyclerView recyclerView = (RecyclerView) shareView.findViewById(R.id.recyclerview);
 
     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     recyclerView.addItemDecoration(
@@ -94,7 +94,7 @@ public class ShareDialog extends CommonDialog {
 
     recyclerView.setAdapter(adapter);
 
-    setContent(recyclerView);
+    setContent(shareView);
   }
 
   private List<Target> provideActionList() {

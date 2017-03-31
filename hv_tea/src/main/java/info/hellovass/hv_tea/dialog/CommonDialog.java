@@ -164,7 +164,7 @@ public class CommonDialog extends Dialog {
     setContent(view, mContentPadding);
   }
 
-  public void setContent(View view, int padding) {
+  public void  setContent(View view, int padding) {
 
     mContainer.removeAllViews();
     mContainer.setPadding(padding, padding, padding, padding);

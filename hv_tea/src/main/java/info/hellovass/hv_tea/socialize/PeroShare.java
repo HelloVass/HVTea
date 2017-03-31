@@ -33,10 +33,10 @@ public class PeroShare {
     sShareDelegate.share(activity, platform, params, shareListener);
   }
 
-  public static void share(Activity activity, SHARE_MEDIA platform, String text,
+  public static void share(Activity activity, SHARE_MEDIA platform, String params,
       UMShareListener shareListener) {
 
-    sShareDelegate.share(activity, platform, text, shareListener);
+    sShareDelegate.share(activity, platform, params, shareListener);
   }
 
   public static void onActivityResult(int requestCode, int resultCode, Intent data) {
