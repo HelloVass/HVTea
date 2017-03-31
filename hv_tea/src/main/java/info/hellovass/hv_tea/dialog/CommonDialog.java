@@ -1,4 +1,4 @@
-package info.hellovass.hvteademo.dialog.base;
+package info.hellovass.hv_tea.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -17,11 +17,11 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import info.hellovass.hv_tea.R;
 import info.hellovass.hv_tea.adapter.recyclerview.CommonAdapter;
+import info.hellovass.hv_tea.adapter.recyclerview.ViewHolder;
 import info.hellovass.hv_tea.adapter.recyclerview.base.ItemViewDelegate;
 import info.hellovass.hv_tea.adapter.recyclerview.base.MultiViewTypeAdapter;
-import info.hellovass.hv_tea.adapter.recyclerview.ViewHolder;
-import info.hellovass.hvteademo.R;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,7 +48,7 @@ public class CommonDialog extends Dialog {
 
   private final int mContentPadding = dp2px(8.0F);
 
-  private DialogInterface.OnClickListener mDismissClickListener = new OnClickListener() {
+  private OnClickListener mDismissClickListener = new OnClickListener() {
 
     @Override public void onClick(DialogInterface dialog, int which) {
 
@@ -175,13 +175,13 @@ public class CommonDialog extends Dialog {
   }
 
   public void setNegativeButton(int negativeButtonTextResId,
-      DialogInterface.OnClickListener listener) {
+      OnClickListener listener) {
 
     setNegativeButton(getContext().getString(negativeButtonTextResId), listener);
   }
 
   public void setNegativeButton(String negativeButtonText,
-      final DialogInterface.OnClickListener listener) {
+      final OnClickListener listener) {
 
     if (TextUtils.isEmpty(negativeButtonText)) {
 
@@ -215,13 +215,13 @@ public class CommonDialog extends Dialog {
   }
 
   public void setPositiveButton(int positiveButtonTextResId,
-      DialogInterface.OnClickListener listener) {
+      OnClickListener listener) {
 
     setPositiveButton(getContext().getResources().getString(positiveButtonTextResId), listener);
   }
 
   public void setPositiveButton(String positiveButtonText,
-      final DialogInterface.OnClickListener listener) {
+      final OnClickListener listener) {
 
     if (TextUtils.isEmpty(positiveButtonText)) {
 

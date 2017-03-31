@@ -8,9 +8,9 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import info.hellovass.hv_tea.adapter.recyclerview.CommonAdapter;
-import info.hellovass.hv_tea.adapter.recyclerview.base.MultiViewTypeAdapter;
 import info.hellovass.hv_tea.adapter.recyclerview.ViewHolder;
-import info.hellovass.hvteademo.dialog.base.CommonDialog;
+import info.hellovass.hv_tea.adapter.recyclerview.base.MultiViewTypeAdapter;
+import info.hellovass.hv_tea.dialog.CommonDialog;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +47,7 @@ public class PeroDialogTestActivity extends AppCompatActivity {
 
       mCommonDialog = new CommonDialog(this);
       mCommonDialog.setItems(
-          new CommonAdapter<String>(this, R.layout.listitem_dialog_common, provideOptionList()) {
+          new CommonAdapter<String>(this, R.layout.listitem_dialog, provideOptionList()) {
 
             @Override protected void convert(ViewHolder holder, String entity, int position) {
 

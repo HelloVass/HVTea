@@ -1,11 +1,11 @@
-package info.hellovass.hvteademo.dialog.base;
+package info.hellovass.hv_tea.dialog;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import info.hellovass.hvteademo.R;
+import info.hellovass.hv_tea.R;
 
 /**
  * Created by hello on 2017/2/23.

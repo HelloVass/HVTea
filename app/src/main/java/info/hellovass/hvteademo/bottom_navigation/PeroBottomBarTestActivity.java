@@ -44,7 +44,7 @@ public class PeroBottomBarTestActivity extends AppCompatActivity {
     mFragmentNavigator.onCreate(savedInstanceState);
 
     mBottomNavigationLayout.setAdapter(
-        new CommonAdapter<Integer>(this, R.layout.bottomitem_pero, provideBottomBarMenu()) {
+        new CommonAdapter<Integer>(this, R.layout.bottombar_item_pero, provideBottomBarMenu()) {
 
           @Override protected void convert(ViewHolder holder, Integer resId, int position) {
 

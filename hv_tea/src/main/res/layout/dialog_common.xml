@@ -12,7 +12,7 @@
       android:orientation="vertical"
       >
 
-    <info.hellovass.hvteademo.dialog.base.DialogHeaderView
+    <info.hellovass.hv_tea.dialog.DialogHeaderView
         android:id="@+id/dialog_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
