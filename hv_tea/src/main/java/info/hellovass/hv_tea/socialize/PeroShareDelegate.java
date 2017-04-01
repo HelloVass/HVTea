@@ -11,7 +11,9 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import info.hellovass.hv_tea.socialize.listeners.AuthListener;
 import info.hellovass.hv_tea.socialize.listeners.ShareListener;
+import java.util.Map;
 
 /**
  * Created by hello on 2017/3/31.
@@ -22,6 +24,8 @@ import info.hellovass.hv_tea.socialize.listeners.ShareListener;
   private UMShareAPI mUMShareAPI;
 
   private ShareListener mShareListener;
+
+  private AuthListener mAuthListener;
 
   private UMShareListener mUMShareListener = new UMShareListener() {
 
@@ -58,6 +62,41 @@ import info.hellovass.hv_tea.socialize.listeners.ShareListener;
     }
   };
 
+  private UMAuthListener mUMAuthListener = new UMAuthListener() {
+
+    @Override public void onStart(SHARE_MEDIA share_media) {
+
+      if (mAuthListener != null) {
+
+        mAuthListener.onStart(share_media);
+      }
+    }
+
+    @Override public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+
+      if (mAuthListener != null) {
+
+        mAuthListener.onSucceed(share_media, i, map);
+      }
+    }
+
+    @Override public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+
+      if (mAuthListener != null) {
+
+        mAuthListener.onError(share_media, i, throwable);
+      }
+    }
+
+    @Override public void onCancel(SHARE_MEDIA share_media, int i) {
+
+      if (mAuthListener != null) {
+
+        mAuthListener.onCancel(share_media, i);
+      }
+    }
+  };
+
   PeroShareDelegate() {
 
   }
@@ -68,6 +107,14 @@ import info.hellovass.hv_tea.socialize.listeners.ShareListener;
     mUMShareAPI.setShareConfig(config);
   }
 
+  /**
+   * 开始分享的大门
+   *
+   * @param activity Activity 的引用
+   * @param platform 要分享到哪个平台
+   * @param params PeroShareParams
+   * @param listener ShareListener
+   */
   public void share(Activity activity, SHARE_MEDIA platform, PeroShareParams params,
       final ShareListener listener) {
 
@@ -102,8 +149,21 @@ import info.hellovass.hv_tea.socialize.listeners.ShareListener;
 
     mShareListener = listener;
     shareAction.setCallback(mUMShareListener);
-
     shareAction.share();
+  }
+
+  /**
+   * 获取第三方平台的信息
+   *
+   * @param activity Activity 的引用
+   * @param platform 第三方平台
+   * @param authListener 回调接口
+   */
+  public void fetchPlatformInfo(Activity activity, SHARE_MEDIA platform,
+      AuthListener authListener) {
+
+    mAuthListener = authListener;
+    mUMShareAPI.getPlatformInfo(activity, platform, mUMAuthListener);
   }
 
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
