@@ -1,4 +1,4 @@
-package info.hellovass.hv_tea.socialize;
+package info.hellovass.hv_tea.socialize.utils;
 
 import com.umeng.socialize.PlatformConfig;
 

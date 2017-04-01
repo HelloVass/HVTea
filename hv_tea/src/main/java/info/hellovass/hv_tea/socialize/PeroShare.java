@@ -6,9 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareConfig;
-import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMWeb;
+import info.hellovass.hv_tea.socialize.listeners.ShareListener;
 
 /**
  * Created by hello on 2017/3/31.
@@ -27,16 +26,10 @@ public class PeroShare {
     sShareDelegate.init(context, config);
   }
 
-  public static void share(Activity activity, SHARE_MEDIA platform, UMWeb params,
-      UMShareListener shareListener) {
+  public static void share(Activity activity, SHARE_MEDIA platform, PeroShareParams params,
+      ShareListener listener) {
 
-    sShareDelegate.share(activity, platform, params, shareListener);
-  }
-
-  public static void share(Activity activity, SHARE_MEDIA platform, String params,
-      UMShareListener shareListener) {
-
-    sShareDelegate.share(activity, platform, params, shareListener);
+    sShareDelegate.share(activity, platform, params, listener);
   }
 
   public static void onActivityResult(int requestCode, int resultCode, Intent data) {

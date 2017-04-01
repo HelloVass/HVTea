@@ -11,7 +11,6 @@ import info.hellovass.hv_tea.adapter.recyclerview.CommonAdapter;
 import info.hellovass.hv_tea.adapter.recyclerview.ViewHolder;
 import info.hellovass.hv_tea.adapter.recyclerview.base.MultiViewTypeAdapter;
 import info.hellovass.hv_tea.dialog.CommonDialog;
-import info.hellovass.hv_tea.socialize.view.ShareDialog;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,24 +34,9 @@ public class PeroDialogTestActivity extends AppCompatActivity {
 
       @Override public void onClick(View v) {
 
-        new ShareDialog(PeroDialogTestActivity.this).setSharePlatformListener(
-            new ShareDialog.ChooseSharePlatformListener() {
-              @Override public void shareToWeChatFriend() {
+        mCommonDialog = provideCommonDialog();
 
-              }
-
-              @Override public void shareToWechatCircle() {
-
-              }
-
-              @Override public void shareToSina() {
-
-              }
-
-              @Override public void copyUrl() {
-
-              }
-            }).show();
+        mCommonDialog.show();
       }
     });
   }
