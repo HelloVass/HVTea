@@ -1,1 +1,1 @@
-include ':app', ':hv_tea', ':share_lib'
+include ':app', ':hv_tea'

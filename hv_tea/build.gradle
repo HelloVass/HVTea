@@ -2,7 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'org.greenrobot.greendao'
 
-
 android {
   compileSdkVersion 25
   buildToolsVersion "25.0.2"
@@ -38,10 +37,10 @@ dependencies {
   })
   testCompile 'junit:junit:4.12'
 
-  compile 'com.android.support:appcompat-v7:25.3.0'
-  compile 'com.android.support:recyclerview-v7:25.3.0'
-  compile 'com.android.support:support-dynamic-animation:25.3.0'
-  compile 'com.android.support:design:25.3.0'
+  compile 'com.android.support:appcompat-v7:25.3.1'
+  compile 'com.android.support:recyclerview-v7:25.3.1'
+  compile 'com.android.support:support-dynamic-animation:25.3.1'
+  compile 'com.android.support:design:25.3.1'
 
   //   image loader
   compile 'com.github.bumptech.glide:glide:3.7.0'
