@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareConfig;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import info.hellovass.hv_tea.socialize.listeners.AuthListener;
 import info.hellovass.hv_tea.socialize.listeners.ShareListener;
 
 /**
@@ -30,6 +31,12 @@ public class PeroShare {
       ShareListener listener) {
 
     sShareDelegate.share(activity, platform, params, listener);
+  }
+
+  public static void fetchPlatformInfo(Activity activity, SHARE_MEDIA platform,
+      AuthListener authListener) {
+
+    sShareDelegate.fetchPlatformInfo(activity, platform, authListener);
   }
 
   public static void onActivityResult(int requestCode, int resultCode, Intent data) {
