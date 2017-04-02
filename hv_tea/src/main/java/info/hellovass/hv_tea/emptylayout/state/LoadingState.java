@@ -33,6 +33,7 @@ public class LoadingState extends BaseState {
 
     viewHolder.ifVisible(R.id.iv_img, false);
     viewHolder.ifVisible(R.id.pb_progressbar, true);
+    viewHolder.ifVisible(R.id.tv_title, true);
     viewHolder.setText(R.id.tv_title, "加载中...");
   }
 
