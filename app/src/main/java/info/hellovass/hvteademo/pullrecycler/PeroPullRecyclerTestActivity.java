@@ -16,6 +16,7 @@ import info.hellovass.hv_tea.adapter.recyclerview.ViewHolder;
 import info.hellovass.hv_tea.adapter.recyclerview.base.MultiViewTypeAdapter;
 import info.hellovass.hv_tea.adapter.recyclerview.wrapper.HeaderAndFooterAdapterWrapper;
 import info.hellovass.hv_tea.adapter.recyclerview.wrapper.LoadMoreAdapterWrapper;
+import info.hellovass.hv_tea.emptylayout.EmptyLayout;
 import info.hellovass.hv_tea.pullrecycler.PullRecycler;
 import info.hellovass.hv_tea.pullrecycler.layoutmanager.MyLinearLayoutManager;
 import info.hellovass.hv_tea.pullrecycler.loadmore.ILoadMoreHandler;
@@ -34,6 +35,8 @@ import java.util.Random;
 public class PeroPullRecyclerTestActivity extends AppCompatActivity {
 
   @BindView(R.id.pullrecycler) PullRecycler mPullRecycler;
+
+  @BindView(R.id.emptylayout) EmptyLayout mEmptyLayout;
 
   private LoadMoreAdapterWrapper<String> mLoadMoreAdapterWrapper;
 
@@ -96,15 +99,14 @@ public class PeroPullRecyclerTestActivity extends AppCompatActivity {
       }
     });
 
-    // 构造普通的 adapter
-    CommonAdapter<String> adapter =
-        new CommonAdapter<String>(this, R.layout.listitem_pullrecycler, provideDataSource()) {
+    CommonAdapter<String> adapter = new CommonAdapter<String>(this, R.layout.listitem_pullrecycler,
+        mDataList) { // 构造普通的 adapter
 
-          @Override protected void convert(ViewHolder holder, String title, int position) {
+      @Override protected void convert(ViewHolder holder, String title, int position) {
 
-            holder.setText(R.id.tv_title, title);
-          }
-        };
+        holder.setText(R.id.tv_title, title);
+      }
+    };
     adapter.setOnItemClickListener(new MultiViewTypeAdapter.OnItemClickListener<String>() {
 
       @Override public void onItemClick(View view, String entity, int position) {
@@ -137,9 +139,31 @@ public class PeroPullRecyclerTestActivity extends AppCompatActivity {
         new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
             DensityUtil.dip2px(this, 56.0F)));
 
-    mLoadMoreAdapterWrapper = new LoadMoreAdapterWrapper<>(headerAndFooterAdapterWrapper);
+    mLoadMoreAdapterWrapper =
+        new LoadMoreAdapterWrapper<>(headerAndFooterAdapterWrapper); // 用 LoadMoreAdapterWrapper 装饰
 
     mPullRecycler.setAdapter(mLoadMoreAdapterWrapper);
+
+    simulateLoadDataSource();
+  }
+
+  private void simulateLoadDataSource() {
+
+    mEmptyLayout.onLoading();
+
+    new Handler().postDelayed(new Runnable() {
+
+      @Override public void run() {
+
+        for (int i = 'A'; i <= 'Z'; i++) {
+
+          mDataList.add((char) i + "");
+        }
+
+        mEmptyLayout.onCompleted();
+        mLoadMoreAdapterWrapper.notifyDataSetChanged();
+      }
+    }, 3 * 1000);
   }
 
   // 模拟刷新成功
@@ -182,7 +206,7 @@ public class PeroPullRecyclerTestActivity extends AppCompatActivity {
     }, 2 * 1000);
   }
 
-  // 模拟加载更多操作
+  // 模拟加载更多成功
   private void simulateLoadMoreSucceed() {
 
     new Handler().postDelayed(new Runnable() {
@@ -209,7 +233,7 @@ public class PeroPullRecyclerTestActivity extends AppCompatActivity {
     }, 2 * 1000);
   }
 
-  // 模拟没有更多数据的情况
+  // 模拟没有更多数据
   private void simulateNoMoreData() {
 
     new Handler().postDelayed(new Runnable() {
@@ -222,18 +246,5 @@ public class PeroPullRecyclerTestActivity extends AppCompatActivity {
         mPullRecycler.onLoadMoreSucceed(false);
       }
     }, 2 * 1000);
-  }
-
-  /**
-   * 生产数据源
-   */
-  private List<String> provideDataSource() {
-
-    for (int i = 'A'; i <= 'Z'; i++) {
-
-      mDataList.add((char) i + "");
-    }
-
-    return mDataList;
   }
 }
