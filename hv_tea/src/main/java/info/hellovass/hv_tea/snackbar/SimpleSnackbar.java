@@ -2,7 +2,6 @@ package info.hellovass.hv_tea.snackbar;
 
 import android.app.Activity;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 
 /**
  * Created by hello on 2017/3/15.
@@ -37,22 +36,42 @@ public final class SimpleSnackbar {
 
   @SuppressWarnings("ConstantConditions") private static void init(Object context) {
 
-    IAnchorViewProvider anchorViewProvider;
+    isSuitableContext(context); // 判断是否是支持的 Context 类型
+
+    AnchorProvider anchorProvider = null;
 
     if (context instanceof Activity) {
 
-      anchorViewProvider = new ActivityAnchorViewProviderAdapter((Activity) context);
-    } else if (context instanceof Fragment) {
+      anchorProvider = new ActivityAnchorProvider((Activity) context);
+    } else if (context instanceof android.support.v4.app.Fragment) {
 
-      anchorViewProvider = new FragmentAnchorViewProviderAdapter((android.app.Fragment) context);
+      anchorProvider = new SupportFragmentAnchorProvider((android.support.v4.app.Fragment) context);
     } else if (context instanceof android.app.Fragment) {
 
-      anchorViewProvider = new SupportFragmentAnchorViewProviderAdapter((Fragment) context);
-    } else {
-
-      throw new IllegalStateException("not support context type");
+      anchorProvider = new FragmentAnchorProvider((android.app.Fragment) context);
     }
 
-    mSnackbar = Snackbar.make(anchorViewProvider.provideAnchorView(), "", Snackbar.LENGTH_SHORT);
+    if (anchorProvider.provideAnchorView() == null) {
+
+      return;
+    }
+
+    mSnackbar = Snackbar.make(anchorProvider.provideAnchorView(), "", Snackbar.LENGTH_SHORT);
+  }
+
+  private static void isSuitableContext(Object context) {
+
+    boolean isActivityContext = context instanceof Activity;
+
+    boolean isSupportFragment = context instanceof android.support.v4.app.Fragment;
+
+    boolean isFragment = context instanceof android.app.Fragment;
+
+    if (isActivityContext || isSupportFragment || isFragment) {
+
+      return;
+    }
+
+    throw new IllegalArgumentException("sorry,not support this context type");
   }
 }
