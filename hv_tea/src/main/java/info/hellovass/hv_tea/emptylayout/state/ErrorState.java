@@ -1,5 +1,6 @@
 package info.hellovass.hv_tea.emptylayout.state;
 
+import android.support.annotation.DrawableRes;
 import android.view.View;
 import info.hellovass.hv_tea.R;
 import info.hellovass.hv_tea.adapter.viewgroup.ViewHolder;
@@ -10,7 +11,7 @@ import info.hellovass.hv_tea.adapter.viewgroup.ViewHolder;
  * 错误状态
  */
 
-public class ErrorState extends BaseState {
+public class ErrorState extends AbsState {
 
   public ErrorState(ViewHolder viewHolder) {
     super(viewHolder);
@@ -24,32 +25,25 @@ public class ErrorState extends BaseState {
 
   }
 
-  @Override public void onError(int imgResId, String errorMsg) {
+  @Override public void onError(@DrawableRes int imgResId, String errorMsg) {
 
-    ViewHolder viewHolder = mViewHolderWeakReference.get();
+    mViewHolder.getConvertView().setVisibility(View.VISIBLE); // 显示
 
-    if (viewHolder == null) {
+    mViewHolder.ifVisible(R.id.iv_img, true); // 显示 ImageView
+    mViewHolder.setImageResource(R.id.iv_img, imgResId);
 
-      return;
-    }
+    mViewHolder.ifVisible(R.id.pb_progressbar, false); // 隐藏进度条
 
-    viewHolder.getConvertView().setVisibility(View.VISIBLE);
-
-    viewHolder.ifVisible(R.id.iv_img, true);
-    viewHolder.setImageResource(R.id.iv_img, imgResId);
-
-    viewHolder.ifVisible(R.id.pb_progressbar, false);
-
-    viewHolder.ifVisible(R.id.tv_title, true);
-    viewHolder.setText(R.id.tv_title, errorMsg);
+    mViewHolder.ifVisible(R.id.tv_title, true); // 显示标题
+    mViewHolder.setText(R.id.tv_title, errorMsg);
   }
 
-  @Override public boolean shouldReload() {
+  @Override public boolean canRetry() {
 
     return true;
   }
 
-  @Override public void onCompleted() {
+  @Override public void onSucceed() {
 
   }
 }

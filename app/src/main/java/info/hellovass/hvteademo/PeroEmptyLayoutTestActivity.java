@@ -11,6 +11,7 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import info.hellovass.hv_tea.emptylayout.EmptyLayout;
+import info.hellovass.hv_tea.emptylayout.OnRetryCallback;
 import java.util.Random;
 
 /**
@@ -38,9 +39,9 @@ public class PeroEmptyLayoutTestActivity extends AppCompatActivity {
 
   private void initWidgets() {
 
-    mEmptyLayout.setOnReloadListener(new EmptyLayout.OnReloadListener() {
+    mEmptyLayout.setOnRetryCallback(new OnRetryCallback() {
 
-      @Override public void onReload() {
+      @Override public void onRetry() {
 
         simulateLoadingState();
       }
@@ -80,7 +81,7 @@ public class PeroEmptyLayoutTestActivity extends AppCompatActivity {
 
         Toast.makeText(PeroEmptyLayoutTestActivity.this, "成功加载数据", Toast.LENGTH_SHORT).show();
 
-        mEmptyLayout.onCompleted();
+        mEmptyLayout.onSucceed();
       }
     }, 3 * 1000);
   }

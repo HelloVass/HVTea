@@ -160,7 +160,7 @@ public class PeroPullRecyclerTestActivity extends AppCompatActivity {
           mDataList.add((char) i + "");
         }
 
-        mEmptyLayout.onCompleted();
+        mEmptyLayout.onSucceed();
         mLoadMoreAdapterWrapper.notifyDataSetChanged();
       }
     }, 3 * 1000);

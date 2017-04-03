@@ -2,6 +2,7 @@ package info.hellovass.hv_tea.emptylayout;
 
 import android.content.Context;
 import android.support.annotation.AttrRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -9,7 +10,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import info.hellovass.hv_tea.R;
 import info.hellovass.hv_tea.adapter.viewgroup.ViewHolder;
-import info.hellovass.hv_tea.emptylayout.state.CompletedState;
+import info.hellovass.hv_tea.emptylayout.state.SucceedState;
 import info.hellovass.hv_tea.emptylayout.state.ErrorState;
 import info.hellovass.hv_tea.emptylayout.state.IdleState;
 import info.hellovass.hv_tea.emptylayout.state.LoadingState;
@@ -26,13 +27,13 @@ public class EmptyLayout extends LinearLayout implements View.OnClickListener {
 
   private State mLoadingState;
 
-  private State mCompletedState;
+  private State mSucceedState;
 
   private State mErrorState;
 
   private State mCurrentState;
 
-  private OnReloadListener mOnReloadListener;
+  private OnRetryCallback mOnRetryCallback;
 
   public EmptyLayout(@NonNull Context context) {
     this(context, null);
@@ -49,25 +50,19 @@ public class EmptyLayout extends LinearLayout implements View.OnClickListener {
     init(context, attrs);
   }
 
-  @Override protected void onDetachedFromWindow() {
-    super.onDetachedFromWindow();
-
-    release();
-  }
-
   private void init(Context context, AttributeSet attrs) {
 
     ViewHolder holder =
         ViewHolder.create(context, View.inflate(context, R.layout.layout_empty, this));
 
-    setOnClickListener(this); // 设置点击回调
-
     mIdleState = new IdleState(holder);
     mLoadingState = new LoadingState(holder);
-    mCompletedState = new CompletedState(holder);
+    mSucceedState = new SucceedState(holder);
     mErrorState = new ErrorState(holder);
 
-    reset();
+    setOnClickListener(this); // 设置点击回调
+
+    reset(); // 重置
   }
 
   public void setCurrentState(State currentState) {
@@ -75,104 +70,73 @@ public class EmptyLayout extends LinearLayout implements View.OnClickListener {
     mCurrentState = currentState;
   }
 
-  public void setOnReloadListener(OnReloadListener onReloadListener) {
+  public void setOnRetryCallback(OnRetryCallback onRetryCallback) {
 
-    mOnReloadListener = onReloadListener;
+    mOnRetryCallback = onRetryCallback;
   }
 
   public void reset() {
 
-    if (mIdleState != null) {
-
-      setCurrentState(mIdleState);
-      mCurrentState.reset();
-    }
+    setCurrentState(mIdleState);
+    mCurrentState.reset();
   }
 
   public void onLoading() {
 
-    if (mLoadingState != null) {
-
-      setCurrentState(mLoadingState);
-      mCurrentState.onLoading();
-    }
+    setCurrentState(mLoadingState);
+    mCurrentState.onLoading();
   }
 
-  public void onCompleted() {
+  public void onSucceed() {
 
-    if (mCompletedState != null) {
-
-      setCurrentState(mCompletedState);
-      mCurrentState.onCompleted();
-    }
+    setCurrentState(mSucceedState);
+    mCurrentState.onSucceed();
   }
 
-  public void onError(int imageResId, String errorMsg) {
+  public void onError(@DrawableRes int imageResId, String errorMsg) {
 
-    if (mErrorState != null) {
-
-      setCurrentState(mErrorState);
-      mCurrentState.onError(imageResId, errorMsg);
-    }
+    setCurrentState(mErrorState);
+    mCurrentState.onError(imageResId, errorMsg);
   }
 
   @Override public void onClick(View v) {
 
     // 只有“当前状态允许转换到 loading 状态”并且 OnReloadListener 不为空，才可以执行 onReload 方法
-    if (mCurrentState != null && mCurrentState.shouldReload() && mOnReloadListener != null) {
+    if (mCurrentState != null && mCurrentState.canRetry() && mOnRetryCallback != null) {
 
-      mOnReloadListener.onReload();
+      mOnRetryCallback.onRetry();
     }
   }
-
-  private void release() {
-
-    mIdleState = null;
-    mLoadingState = null;
-    mCompletedState = null;
-    mErrorState = null;
-
-    mCurrentState = null;
-
-    setOnReloadListener(null);
-    setOnClickListener(null);
-  }
-
-  public interface OnReloadListener {
-
-    void onReload();
-  }
-
   public interface State {
 
     /**
-     * 重置 EmptyLayout，进入 Idle 状态
+     * 重置，进入 idle 状态
      */
     void reset();
 
     /**
-     * 进入加载中状态
+     * 加载中
      */
     void onLoading();
 
     /**
-     * 进入错误状态
+     * 发生错误
      *
      * @param imgResId 图片资源 Id
      * @param errorMsg 抛给用户的错误信息
      */
-    void onError(int imgResId, String errorMsg);
+    void onError(@DrawableRes int imgResId, String errorMsg);
 
     /**
-     * 当前状态是否可以进入 loading 状态
+     * 是否允许点击重试
      *
-     * @return true 表示可以，false 则不能
+     * @return true 表示可以
      */
-    boolean shouldReload();
+    boolean canRetry();
 
     /**
-     * 加载完成状态
+     * 加载成功
      */
-    void onCompleted();
+    void onSucceed();
   }
 }

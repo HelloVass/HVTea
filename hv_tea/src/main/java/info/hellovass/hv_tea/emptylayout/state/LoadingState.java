@@ -1,5 +1,6 @@
 package info.hellovass.hv_tea.emptylayout.state;
 
+import android.support.annotation.DrawableRes;
 import android.view.View;
 import info.hellovass.hv_tea.R;
 import info.hellovass.hv_tea.adapter.viewgroup.ViewHolder;
@@ -10,7 +11,7 @@ import info.hellovass.hv_tea.adapter.viewgroup.ViewHolder;
  * 加载中状态
  */
 
-public class LoadingState extends BaseState {
+public class LoadingState extends AbsState {
 
   public LoadingState(ViewHolder viewHolder) {
     super(viewHolder);
@@ -22,31 +23,24 @@ public class LoadingState extends BaseState {
 
   @Override public void onLoading() {
 
-    ViewHolder viewHolder = mViewHolderWeakReference.get();
+    mViewHolder.getConvertView().setVisibility(View.VISIBLE);
 
-    if (viewHolder == null) {
-
-      return;
-    }
-
-    viewHolder.getConvertView().setVisibility(View.VISIBLE);
-
-    viewHolder.ifVisible(R.id.iv_img, false);
-    viewHolder.ifVisible(R.id.pb_progressbar, true);
-    viewHolder.ifVisible(R.id.tv_title, true);
-    viewHolder.setText(R.id.tv_title, "加载中...");
+    mViewHolder.ifVisible(R.id.iv_img, false);
+    mViewHolder.ifVisible(R.id.pb_progressbar, true);
+    mViewHolder.ifVisible(R.id.tv_title, true);
+    mViewHolder.setText(R.id.tv_title, "加载中...");
   }
 
-  @Override public void onError(int imgResId, String errorMsg) {
+  @Override public void onError(@DrawableRes int imgResId, String errorMsg) {
 
   }
 
-  @Override public boolean shouldReload() {
+  @Override public boolean canRetry() {
 
     return false;
   }
 
-  @Override public void onCompleted() {
+  @Override public void onSucceed() {
 
   }
 }
