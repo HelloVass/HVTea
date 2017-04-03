@@ -2,7 +2,6 @@ package info.hellovass.hv_tea.snackbar;
 
 import android.app.Activity;
 import android.view.View;
-import java.lang.ref.WeakReference;
 
 /**
  * Created by hello on 2017/3/15.
@@ -10,22 +9,20 @@ import java.lang.ref.WeakReference;
 
 public class ActivityAnchorProvider implements AnchorProvider {
 
-  private WeakReference<Activity> mContextWeakReference;
+  private Activity mContext;
 
   public ActivityAnchorProvider(Activity context) {
 
-    mContextWeakReference = new WeakReference<>(context);
+    mContext = context;
   }
 
   @Override public View provideAnchorView() {
 
-    Activity context = mContextWeakReference.get();
-
-    if (context == null) {
+    if (mContext == null) {
 
       return null;
     }
 
-    return context.getWindow().getDecorView().findViewById(android.R.id.content);
+    return mContext.getWindow().getDecorView().findViewById(android.R.id.content);
   }
 }

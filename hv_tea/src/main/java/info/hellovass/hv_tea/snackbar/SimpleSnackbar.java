@@ -11,12 +11,19 @@ public final class SimpleSnackbar {
 
   private static long mNextTimeInMillis = 0L;
 
-  private static Snackbar mSnackbar;
+  private static Snackbar sSnackbar;
 
   private SimpleSnackbar() {
 
   }
 
+  /**
+   * 显示一个 Snackbar
+   *
+   * @param context Activity,Fragment
+   * @param msg 信息
+   * @param duration Snackbar 显示的时间
+   */
   public static void show(Object context, String msg, int duration) {
 
     long currentTimeMillis = System.currentTimeMillis();
@@ -28,10 +35,18 @@ public final class SimpleSnackbar {
 
     init(context);
 
-    mSnackbar.setText(msg);
-    mSnackbar.setDuration(duration);
+    sSnackbar.setText(msg);
+    sSnackbar.setDuration(duration);
     mNextTimeInMillis = currentTimeMillis + (duration == Snackbar.LENGTH_SHORT ? 2000 : 3500);
-    mSnackbar.show();
+    sSnackbar.show();
+  }
+
+  /**
+   * 释放静态变量 sSnackbar
+   */
+  public static void release() {
+
+    sSnackbar = null;
   }
 
   @SuppressWarnings("ConstantConditions") private static void init(Object context) {
@@ -56,7 +71,7 @@ public final class SimpleSnackbar {
       return;
     }
 
-    mSnackbar = Snackbar.make(anchorProvider.provideAnchorView(), "", Snackbar.LENGTH_SHORT);
+    sSnackbar = Snackbar.make(anchorProvider.provideAnchorView(), "", Snackbar.LENGTH_SHORT);
   }
 
   private static void isSuitableContext(Object context) {
