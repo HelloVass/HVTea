@@ -30,13 +30,13 @@ greendao {
 
 
 dependencies {
-
   compile fileTree(include: ['*.jar'], dir: 'libs')
   androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
     exclude group: 'com.android.support', module: 'support-annotations'
   })
   testCompile 'junit:junit:4.12'
 
+  //  support lib
   compile 'com.android.support:appcompat-v7:25.3.1'
   compile 'com.android.support:recyclerview-v7:25.3.1'
   compile 'com.android.support:support-dynamic-animation:25.3.1'
@@ -49,6 +49,15 @@ dependencies {
   compile 'org.greenrobot:greendao:3.2.0'
   compile 'org.greenrobot:greendao-generator:3.2.0'
 
+  // network
+  compile 'com.squareup.retrofit2:retrofit:2.2.0'
+  compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+  compile 'com.squareup.okhttp3:okhttp:3.6.0'
+  compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+
+  //  rx
+  compile 'io.reactivex.rxjava2:rxjava:2.0.8'
+  compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
   //  social share
   compile files('libs/SocialSDK_Sina_Simplify.jar')
