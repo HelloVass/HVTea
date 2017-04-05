@@ -25,10 +25,4 @@ public class SimpleSnackbarTestActivity extends AppCompatActivity {
 
     SimpleSnackbar.show(this, "测试 SimpleSnackbar", Snackbar.LENGTH_SHORT);
   }
-
-  @Override protected void onDestroy() {
-    super.onDestroy();
-
-    SimpleSnackbar.release();
-  }
 }
