@@ -1,6 +1,7 @@
 package info.hellovass.hv_tea.snackbar;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 
 /**
@@ -11,8 +12,6 @@ public final class SimpleSnackbar {
 
   private static long mNextTimeInMillis = 0L;
 
-  private static Snackbar sSnackbar;
-
   private SimpleSnackbar() {
 
   }
@@ -21,10 +20,10 @@ public final class SimpleSnackbar {
    * 显示一个 Snackbar
    *
    * @param context Activity,Fragment
-   * @param msg 信息
+   * @param text 显示在 Snackbar 的提示信息
    * @param duration Snackbar 显示的时间
    */
-  public static void show(Object context, String msg, int duration) {
+  public static void show(Object context, @NonNull CharSequence text, int duration) {
 
     long currentTimeMillis = System.currentTimeMillis();
 
@@ -33,23 +32,21 @@ public final class SimpleSnackbar {
       return;
     }
 
-    init(context);
+    Snackbar snackbar = createSnackbarInstance(context);
 
-    sSnackbar.setText(msg);
-    sSnackbar.setDuration(duration);
+    if (snackbar == null) { // 如果未创建 Snackbar，return
+
+      return;
+    }
+
+    snackbar.setText(text);
+    snackbar.setDuration(duration);
     mNextTimeInMillis = currentTimeMillis + (duration == Snackbar.LENGTH_SHORT ? 2000 : 3500);
-    sSnackbar.show();
+    snackbar.show();
   }
 
-  /**
-   * 释放静态变量 sSnackbar
-   */
-  public static void release() {
-
-    sSnackbar = null;
-  }
-
-  @SuppressWarnings("ConstantConditions") private static void init(Object context) {
+  @SuppressWarnings("ConstantConditions")
+  private static Snackbar createSnackbarInstance(Object context) {
 
     isSuitableContext(context); // 判断是否是支持的 Context 类型
 
@@ -68,12 +65,17 @@ public final class SimpleSnackbar {
 
     if (anchorProvider.provideAnchorView() == null) {
 
-      return;
+      return null;
     }
 
-    sSnackbar = Snackbar.make(anchorProvider.provideAnchorView(), "", Snackbar.LENGTH_SHORT);
+    return Snackbar.make(anchorProvider.provideAnchorView(), "", Snackbar.LENGTH_SHORT);
   }
 
+  /**
+   * 判断传入的 Context 是否合适
+   *
+   * @param context 上下文
+   */
   private static void isSuitableContext(Object context) {
 
     boolean isActivityContext = context instanceof Activity;
@@ -87,6 +89,6 @@ public final class SimpleSnackbar {
       return;
     }
 
-    throw new IllegalArgumentException("sorry,not support this context type");
+    throw new IllegalArgumentException("sorry, not support this context type");
   }
 }
