@@ -14,6 +14,7 @@ public abstract class RetrofitWrapper {
     mRetrofit = new Retrofit.Builder().baseUrl(retrofitWrapperFactory.provideBaseUrl())
         .client(retrofitWrapperFactory.createOkHttpClient())
         .addConverterFactory(retrofitWrapperFactory.createGsonConverterFactory())
+        .addCallAdapterFactory(retrofitWrapperFactory.createRxJavaCallAdapter())
         .build();
   }
 

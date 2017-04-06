@@ -1,6 +1,7 @@
 package info.hellovass.hv_tea.net.base;
 
 import okhttp3.OkHttpClient;
+import retrofit2.CallAdapter;
 import retrofit2.Converter;
 
 /**
@@ -12,9 +13,11 @@ import retrofit2.Converter;
  */
 public interface RetrofitWrapperFactory {
 
+  String provideBaseUrl();
+
   OkHttpClient createOkHttpClient();
 
   Converter.Factory createGsonConverterFactory();
 
-  String provideBaseUrl();
+  CallAdapter.Factory createRxJavaCallAdapter();
 }
